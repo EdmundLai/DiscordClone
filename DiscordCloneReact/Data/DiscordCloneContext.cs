@@ -16,17 +16,17 @@ namespace DiscordCloneReact.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Server>().HasData(new Server { ServerName = "test" });
+            modelBuilder.Entity<Server>().HasData(new Server { ServerId = 1, ServerName = "test" });
             modelBuilder.Entity<Channel>().HasData(
-                new Channel { ChannelName = "general", ServerId = 1 },
-                new Channel { ChannelName = "csgo", ServerId = 1 },
-                new Channel { ChannelName = "genshin", ServerId = 1 });
+                new Channel { ChannelId = 1, ChannelName = "general", ServerId = 1 },
+                new Channel { ChannelId = 2, ChannelName = "csgo", ServerId = 1 },
+                new Channel { ChannelId = 3, ChannelName = "genshin", ServerId = 1 });
             modelBuilder.Entity<User>().HasData(
-                new User { UserName = "Tom" },
-                new User { UserName = "Jim" });
+                new User { UserId = 1, UserName = "Tom" },
+                new User { UserId = 2, UserName = "Jim" });
             modelBuilder.Entity<ServerMember>().HasData(
-                new ServerMember { ServerId = 1, UserId = 1 },
-                new ServerMember { ServerId = 1, UserId = 2 });
+                new ServerMember { ServerMemberId = 1, ServerId = 1, UserId = 1 },
+                new ServerMember { ServerMemberId = 2, ServerId = 1, UserId = 2 });
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
