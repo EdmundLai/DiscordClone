@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using DiscordCloneReact.Hubs;
+using DiscordCloneReact.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscordCloneReact
 {
@@ -33,6 +35,8 @@ namespace DiscordCloneReact
                         .AllowCredentials();
                 });
             });
+
+            services.AddDbContext<DiscordCloneContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DiscordCloneContext")));
 
             services.AddControllersWithViews();
 

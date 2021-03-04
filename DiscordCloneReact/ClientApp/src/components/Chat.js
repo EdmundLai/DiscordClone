@@ -34,11 +34,11 @@ function Chat() {
                         updatedChat.push(message);
 
                         setChat(updatedChat);
-                    })
+                    });
                 })
                 .catch(error => {
                     console.log(`Connection failed: ${error}`);
-                })
+                });
 
         }
     }, [connection]);
