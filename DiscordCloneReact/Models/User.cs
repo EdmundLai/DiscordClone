@@ -11,9 +11,10 @@ namespace DiscordCloneReact.Models
     {
         public int UserId { get; set; }
 
-        [Required]
+        [Required, StringLength(40)]
         public string UserName { get; set; }
 
+        [StringLength(100)]
         public string UserPassword { get; set; }
     }
 }

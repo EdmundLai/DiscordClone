@@ -11,7 +11,7 @@ namespace DiscordCloneReact.Models
     {
         public int ChannelId { get; set; }
 
-        [Required]
+        [Required, StringLength(40)]
         public string ChannelName { get; set; }
 
         [Required]

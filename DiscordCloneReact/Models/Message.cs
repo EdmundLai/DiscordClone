@@ -22,6 +22,7 @@ namespace DiscordCloneReact.Models
         [Required]
         public DateTime CreationTime { get; set; }
 
+        [StringLength(1000)]
         public string MessageContent { get; set; }
     }
 }
