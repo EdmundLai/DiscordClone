@@ -21,9 +21,18 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        async public Task<IEnumerable<User>> Get(int? userId)
         {
+            if (userId.HasValue)
+            {
+                User user = await discordCloneContext.Users.FindAsync(userId);
+                var userList = new List<User>();
+                userList.Add(user);
+                return userList;
+            }
+
             return discordCloneContext.Users.ToList();
         }
+        
     }
 }

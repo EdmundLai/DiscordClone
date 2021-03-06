@@ -25,5 +25,11 @@ namespace DiscordCloneReact.Controllers
         {
             return discordCloneContext.Servers.ToList();
         }
+
+        [HttpGet("server")]
+        public async Task<Server> GetServerByServerId(int serverId)
+        {
+            return await discordCloneContext.Servers.FindAsync(serverId);
+        }
     }
 }

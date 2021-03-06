@@ -20,6 +20,7 @@ namespace DiscordCloneReact.Controllers
             this.discordCloneContext = discordCloneContext;
         }
 
+        // gets all channels or all channels belonging to particular server
         [HttpGet]
         public IEnumerable<Channel> Get(int? serverId)
         {
@@ -28,6 +29,13 @@ namespace DiscordCloneReact.Controllers
                 return discordCloneContext.Channels.Where(c => c.ServerId == serverId).ToList();
             }
             return discordCloneContext.Channels.ToList();
+        }
+
+        // get channel with the particular channel id
+        [HttpGet("channel")]
+        public async Task<Channel> GetChannelByChannelId(int channelId)
+        {
+            return await discordCloneContext.Channels.FindAsync(channelId);
         }
     }
 }
