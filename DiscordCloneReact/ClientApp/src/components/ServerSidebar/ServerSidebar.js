@@ -4,7 +4,7 @@ import './ServerSidebar.css';
 
 var requestController = require('../../api/requestController');
 
-function ServerSidebar() {
+function ServerSidebar(props) {
     const [servers, setServers] = useState([]);
 
     useEffect(() => {
@@ -17,13 +17,23 @@ function ServerSidebar() {
         getServers();
     }, []);
 
+    function resetServer() {
+        props.setCurrentServerAndChannel();
+    }
+
     return (
         <div className="ServerSidebar">
-            {servers.map(server => {
+            <div onClick={resetServer} className="ServerHome">Home</div>
+            {servers.map((server) => {
                 return (
-                    <ServerItem key={server.serverId} server={server} />
+                    <ServerItem
+                        key={server.serverId}
+                        server={server}
+                        setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                    />
                 );
             })}
+            <div className="NewServerButton">+</div>
         </div>
     );
 }
@@ -36,10 +46,14 @@ function ServerItem(props) {
         return serverNameWords.map(word => word[0]).join("");
     }
 
+    function setServer() {
+        props.setCurrentServerAndChannel(server.serverId);
+    }
+
     const serverInitials = getInitials(server.serverName);
 
     return (
-        <div className="ServerItem">
+        <div onClick={setServer} className="ServerItem">
             <span>{serverInitials}</span>
         </div>
         );

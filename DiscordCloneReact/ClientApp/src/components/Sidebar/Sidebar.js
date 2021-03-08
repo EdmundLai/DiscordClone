@@ -15,7 +15,9 @@ function Sidebar(props) {
 
     return (
         <div className="Sidebar">
-            <ServerSidebar />
+            <ServerSidebar
+                setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+            />
             {channelSidebar}
         </div>
     );

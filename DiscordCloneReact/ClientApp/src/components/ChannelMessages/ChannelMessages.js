@@ -22,7 +22,7 @@ function ChannelMessages(props) {
 
     return (
         <div className="ChannelMessages">
-            <h3># {channelName}</h3>
+            <h3 className="ChannelHeading"># {channelName}</h3>
             {messages.map(m => {
                 return (
                     <div key={m.messageId}>

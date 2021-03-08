@@ -2,6 +2,7 @@
     background: #2f3136;
     color: #8e9287;
     padding: 10px 10px;
+    user-select: none;
 }
 
 .ChannelItem {

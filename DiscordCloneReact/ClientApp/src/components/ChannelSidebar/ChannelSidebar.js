@@ -15,21 +15,23 @@ function ChannelSidebar(props) {
         }
 
         getChannelsForServer();
-    }, [props.server.serverId]);
+    }, [props.server]);
+
+    const channelContent = props.channel !== null ? channels.map(channel => {
+        return (
+            <ChannelItem
+                key={channel.channelId}
+                channel={channel}
+                currChannelId={props.channel.channelId}
+                setCurrentChannel={props.setCurrentChannel}
+            />
+        );
+    }) : <></>;
 
     return (
         <div className="ChannelSidebar">
             <h3>{props.server.serverName}</h3>
-            {channels.map(channel => {
-                return (
-                    <ChannelItem
-                        key={channel.channelId}
-                        channel={channel}
-                        currChannelId={props.channel.channelId}
-                        setCurrentChannel={props.setCurrentChannel}
-                    />
-                );
-            })}
+            {channelContent}
         </div>
     );
 }

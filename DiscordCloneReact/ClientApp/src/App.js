@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
 import Chat from './components/Chat';
 
 import Sidebar from './components/Sidebar/Sidebar';
@@ -35,10 +33,45 @@ export default function App(){
             setCurrentChannel(channel);
         }
 
-        getServer1();
-        getChannel1();
+        const setInitialServerAndChannel = async () => {
+            const servers = await requestController.getServers();
+            if (servers.length > 0) {
+                const initialServer = servers[0];
+                console.log(initialServer);
+                setCurrentServer(initialServer);
+                const serverChannels = await requestController.getServerChannels(initialServer.serverId);
+                if (serverChannels.length > 0) {
+                    const initialChannel = serverChannels[0];
+                    setCurrentChannel(initialChannel);
+                }
+            }
+        }
+
+        //getServer1();
+        //getChannel1();
+        setInitialServerAndChannel();
 
     }, []);
+
+    async function setInitialChannelFromServerId(serverId) {
+        const serverChannels = await requestController.getServerChannels(serverId);
+        if (typeof serverChannels !== 'undefined' && serverChannels.length > 0) {
+            const initialChannel = serverChannels[0];
+            setCurrentChannel(initialChannel);
+        }
+    }
+
+    // if serverId is not passed in, reset currentServer and currentChannel
+    async function setCurrentServerAndChannel(serverId) {
+        if (typeof serverId == 'undefined') {
+            setCurrentServer(null);
+            setCurrentChannel(null);
+        } else {
+            const server = await requestController.getServerByServerId(serverId);
+            setCurrentServer(server);
+            await setInitialChannelFromServerId(serverId);
+        }
+    }
 
     const channelContent = currentChannel != null ? <ChannelMessages channel={currentChannel} /> : <></>;
 
@@ -48,6 +81,7 @@ export default function App(){
                 currentServer={currentServer}
                 currentChannel={currentChannel}
                 setCurrentChannel={setCurrentChannel}
+                setCurrentServerAndChannel={setCurrentServerAndChannel}
             />
             {channelContent}
         </div>

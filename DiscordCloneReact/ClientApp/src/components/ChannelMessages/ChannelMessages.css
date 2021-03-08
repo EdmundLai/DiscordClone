@@ -4,3 +4,7 @@
     color: #ffffff;
     padding: 10px 10px;
 }
+
+.ChannelHeading {
+    user-select: none;
+}
