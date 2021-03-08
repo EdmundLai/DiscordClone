@@ -3,9 +3,15 @@
 import ServerSidebar from '../ServerSidebar/ServerSidebar';
 import ChannelSidebar from '../ChannelSidebar/ChannelSidebar';
 
+import './Sidebar.css';
+
 function Sidebar(props) {
     const channelSidebar = props.currentServer != null ?
-        <ChannelSidebar serverId={props.currentServer.serverId} /> : <></>;
+        <ChannelSidebar
+            server={props.currentServer}
+            channel={props.currentChannel}
+            setCurrentChannel={props.setCurrentChannel}
+        /> : <></>;
 
     return (
         <div className="Sidebar">

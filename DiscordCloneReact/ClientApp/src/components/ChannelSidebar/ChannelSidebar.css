@@ -1,0 +1,13 @@
+﻿.ChannelSidebar {
+    background: #2f3136;
+    color: #8e9287;
+    padding: 10px 10px;
+}
+
+.ChannelItem {
+    cursor: pointer;
+}
+
+.CurrentChannel {
+    color: #ffffff;
+}

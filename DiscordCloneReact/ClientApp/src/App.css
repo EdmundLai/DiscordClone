@@ -1,0 +1,14 @@
+﻿.App {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+html,
+body {
+    height: 100%;
+}

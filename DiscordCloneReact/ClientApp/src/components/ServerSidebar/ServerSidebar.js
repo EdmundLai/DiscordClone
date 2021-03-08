@@ -1,5 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 
+import './ServerSidebar.css';
+
 var requestController = require('../../api/requestController');
 
 function ServerSidebar() {
@@ -13,23 +15,34 @@ function ServerSidebar() {
         }
 
         getServers();
-
-
-
     }, []);
 
     return (
         <div className="ServerSidebar">
-            <h2>List of servers</h2>
             {servers.map(server => {
                 return (
-                    <div key={ server.serverId }>
-                        {server.serverName}
-                    </div>
+                    <ServerItem key={server.serverId} server={server} />
                 );
             })}
         </div>
     );
+}
+
+function ServerItem(props) {
+    const server = props.server;
+
+    function getInitials(serverName) {
+        const serverNameWords = serverName.split(" ");
+        return serverNameWords.map(word => word[0]).join("");
+    }
+
+    const serverInitials = getInitials(server.serverName);
+
+    return (
+        <div className="ServerItem">
+            <span>{serverInitials}</span>
+        </div>
+        );
 }
 
 export default ServerSidebar;

@@ -1,0 +1,4 @@
+﻿.Sidebar {
+    display: flex;
+    flex-direction: row;
+}

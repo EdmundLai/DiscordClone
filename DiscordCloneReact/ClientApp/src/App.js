@@ -12,7 +12,7 @@ import ChannelMessages from './components/ChannelMessages/ChannelMessages';
 
 import TestComponent from './components/TestComponent';
 
-import './custom.css'
+import './App.css'
 
 var requestController = require('./api/requestController');
 
@@ -44,7 +44,11 @@ export default function App(){
 
     return (
           <div className="App">
-            <Sidebar currentServer={currentServer} />
+            <Sidebar
+                currentServer={currentServer}
+                currentChannel={currentChannel}
+                setCurrentChannel={setCurrentChannel}
+            />
             {channelContent}
         </div>
     );

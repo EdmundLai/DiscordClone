@@ -1,5 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 
+import './ChannelMessages.css';
+
 var requestController = require('../../api/requestController');
 
 function ChannelMessages(props) {
