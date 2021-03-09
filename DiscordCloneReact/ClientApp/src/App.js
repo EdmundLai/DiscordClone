@@ -73,5 +73,4 @@ export default function App(){
             {channelContent}
         </div>
     );
-
 }

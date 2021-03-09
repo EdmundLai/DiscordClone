@@ -1,4 +1,8 @@
 ﻿import React, { useState, useEffect } from "react";
+import Modal from 'react-modal';
+
+import ServerItem from '../ServerItem/ServerItem';
+import ServerModalContent from '../ServerModalContent/ServerModalContent';
 
 import './ServerSidebar.css';
 
@@ -6,6 +10,8 @@ var requestController = require('../../api/requestController');
 
 function ServerSidebar(props) {
     const [servers, setServers] = useState([]);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [serverListNeedsUpdate, setServerListNeedsUpdate] = useState(false);
 
     useEffect(() => {
         const getServers = async () => {
@@ -15,7 +21,38 @@ function ServerSidebar(props) {
         }
 
         getServers();
-    }, []);
+        setServerListNeedsUpdate(false);
+    }, [serverListNeedsUpdate]);
+
+    const customStyles = {
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)'
+        },
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            background: '#36393f',
+            border: 'none',
+            color: '#ffffff'
+        }
+    };
+
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
 
     function resetServer() {
         props.setCurrentServerAndChannel();
@@ -36,32 +73,19 @@ function ServerSidebar(props) {
                     />
                 );
             })}
-            <div className="NewServerButton">+</div>
+            <div onClick={openModal} className="NewServerButton">+</div>
+            <Modal
+                isOpen={modalIsOpen}
+                style={customStyles}
+            >
+                <ServerModalContent
+                    setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                    setServerListNeedsUpdate={setServerListNeedsUpdate}
+                    closeModal={closeModal}
+                />
+            </Modal>
         </div>
     );
-}
-
-function ServerItem(props) {
-    const server = props.server;
-
-    function getInitials(serverName) {
-        const serverNameWords = serverName.split(" ");
-        return serverNameWords.map(word => word[0]).join("");
-    }
-
-    function setServer() {
-        props.setCurrentServerAndChannel(server.serverId);
-    }
-
-    const serverInitials = getInitials(server.serverName);
-
-    const cssServerItemClassName = props.selectedServer == null || props.selectedServer.serverId !== server.serverId ? "ServerItem" : "SelectedServer ServerItem";
-
-    return (
-        <div onClick={setServer} className={cssServerItemClassName}>
-            <span>{serverInitials}</span>
-        </div>
-        );
 }
 
 export default ServerSidebar;

@@ -97,6 +97,19 @@ async function deleteChannelFromServer(channelId) {
     }
 }
 
+// creates a new server in the database
+async function addNewServer(serverName) {
+    try {
+        const result = await axios.post(`${apiEndpoint}/api/Servers/create?serverName=${serverName}`);
+        return result.data;
+    } catch (e) {
+        console.log("Error from addNewServer");
+        console.log(e);
+    }
+}
+
+
+
 exports.sendMessage = sendMessage;
 
 exports.getServers = getServers;
@@ -112,3 +125,5 @@ exports.getChannelByChannelId = getChannelByChannelId;
 exports.addChannelToServer = addChannelToServer;
 
 exports.deleteChannelFromServer = deleteChannelFromServer;
+
+exports.addNewServer = addNewServer;

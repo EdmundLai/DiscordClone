@@ -48,7 +48,6 @@ function ChannelItem(props) {
         props.setCurrentChannel(channel);
     }
 
-    // placeholder functionality
     async function deleteChannelAndClose() {
         //console.log(`deleting channel with channel id of ${channel.channelId}`);
         await requestController.deleteChannelFromServer(channel.channelId);
