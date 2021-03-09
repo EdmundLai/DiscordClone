@@ -28,9 +28,16 @@ function ChannelSidebar(props) {
         );
     }) : <></>;
 
+    function createChannel() {
+
+    }
+
     return (
         <div className="ChannelSidebar">
             <h3>{props.server.serverName}</h3>
+            <div className="ChannelsHeader">Text Channels
+                <span className="CreateChannelButton" onClick={createChannel}>+</span>
+            </div>
             {channelContent}
         </div>
     );

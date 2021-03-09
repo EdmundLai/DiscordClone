@@ -31,5 +31,14 @@ namespace DiscordCloneReact.Controllers
         {
             return await discordCloneContext.Servers.FindAsync(serverId);
         }
+
+        [HttpPost("create")]
+        public async Task AddNewServer(string serverName)
+        {
+            Server newServer = new Server { ServerName = serverName };
+
+            discordCloneContext.Servers.Add(newServer);
+            await discordCloneContext.SaveChangesAsync();
+        }
     }
 }

@@ -7,11 +7,15 @@
     display: flex;
     margin: 10px 5px;
     border-radius: 50%;
-    background-color: #36393f;
+    background: #36393f;
     height: 40px;
     width: 40px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     user-select: none;
+}
+
+.SelectedServer {
+    background: #7289da;
 }

@@ -21,12 +21,15 @@ function ServerSidebar(props) {
         props.setCurrentServerAndChannel();
     }
 
+    const serverHomeCssClass = props.currentServer == null ? "SelectedServer ServerHome" : "ServerHome";
+
     return (
         <div className="ServerSidebar">
-            <div onClick={resetServer} className="ServerHome">Home</div>
+            <div onClick={resetServer} className={serverHomeCssClass}>Home</div>
             {servers.map((server) => {
                 return (
                     <ServerItem
+                        selectedServer={props.currentServer}
                         key={server.serverId}
                         server={server}
                         setCurrentServerAndChannel={props.setCurrentServerAndChannel}
@@ -52,8 +55,10 @@ function ServerItem(props) {
 
     const serverInitials = getInitials(server.serverName);
 
+    const cssServerItemClassName = props.selectedServer == null || props.selectedServer.serverId !== server.serverId ? "ServerItem" : "SelectedServer ServerItem";
+
     return (
-        <div onClick={setServer} className="ServerItem">
+        <div onClick={setServer} className={cssServerItemClassName}>
             <span>{serverInitials}</span>
         </div>
         );
