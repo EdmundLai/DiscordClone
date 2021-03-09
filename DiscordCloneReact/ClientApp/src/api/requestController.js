@@ -2,6 +2,8 @@ var axios = require("axios");
 
 const apiEndpoint = "https://localhost:5001";
 
+// TODO: implement create server and create channel methods
+
 async function sendMessage(userId, channelId, messageContent) {
     try {
         const result = await axios.post(`${apiEndpoint}/api/Messages/Create`, {
@@ -68,7 +70,15 @@ async function getChannelMessages(channelId) {
     }
 }
 
-
+async function addChannelToServer(channelName, serverId) {
+    try {
+        const result = await axios.post(`${apiEndpoint}/api/Channels/create?channelName=${channelName}&serverId=${serverId}`);
+        return result;
+    } catch (e) {
+        console.log("Error from addChannelToServer");
+        console.log(e);
+    }
+}
 
 exports.sendMessage = sendMessage;
 
@@ -81,3 +91,5 @@ exports.getChannelMessages = getChannelMessages;
 exports.getServerByServerId = getServerByServerId;
 
 exports.getChannelByChannelId = getChannelByChannelId;
+
+exports.addChannelToServer = addChannelToServer;
