@@ -2,6 +2,7 @@
 using DiscordCloneReact.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,24 @@ namespace DiscordCloneReact.Controllers
 
             discordCloneContext.Channels.Add(newChannel);
             await discordCloneContext.SaveChangesAsync();
+        }
+
+        [HttpDelete("delete")]
+        public async Task<bool> DeleteChannel(int channelId)
+        {
+            try
+            {
+                Channel channel = discordCloneContext.Channels.Find(channelId);
+
+                discordCloneContext.Channels.Remove(channel);
+
+                await discordCloneContext.SaveChangesAsync();
+                return true;
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                return false;
+            }
         }
     }
 }

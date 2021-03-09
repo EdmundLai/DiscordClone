@@ -6,7 +6,7 @@ const apiEndpoint = "https://localhost:5001";
 
 async function sendMessage(userId, channelId, messageContent) {
     try {
-        const result = await axios.post(`${apiEndpoint}/api/Messages/Create`, {
+        const result = await axios.post(`${apiEndpoint}/api/Messages/create`, {
             "ChannelId": channelId,
             "UserId": userId,
             "CreationTime": Date.now(),
@@ -80,6 +80,23 @@ async function addChannelToServer(channelName, serverId) {
     }
 }
 
+async function deleteChannelFromServer(channelId) {
+    try {
+        // remove all messages from database with corresponding channelId
+        const result = await axios.delete(`${apiEndpoint}/api/Messages/deleteByChannelId?channelId=${channelId}`);
+        if (result) {
+            // remove channel from database
+            const result2 = await axios.delete(`${apiEndpoint}/api/Channels/delete?channelId=${channelId}`);
+            return result2;
+        }
+
+        return false;
+    } catch (e) {
+        console.log("Error from deleteChannelFromServer");
+        console.log(e);
+    }
+}
+
 exports.sendMessage = sendMessage;
 
 exports.getServers = getServers;
@@ -93,3 +110,5 @@ exports.getServerByServerId = getServerByServerId;
 exports.getChannelByChannelId = getChannelByChannelId;
 
 exports.addChannelToServer = addChannelToServer;
+
+exports.deleteChannelFromServer = deleteChannelFromServer;

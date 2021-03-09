@@ -51,7 +51,7 @@ namespace DiscordCloneReact.Controllers
             return query;
         }
 
-        [HttpPost("Create")]
+        [HttpPost("create")]
         public async Task<Message> Create([FromBody] JSMessage messageObj)
         {
             _logger.LogInformation(messageObj.MessageContent);
@@ -80,6 +80,27 @@ namespace DiscordCloneReact.Controllers
             }
 
             return message;
+        }
+
+
+        // delete all messages corresponding to channelId
+        [HttpDelete("deleteByChannelId")]
+        public async Task<bool> DeleteByChannelId(int channelId)
+        {
+            try
+            {
+                var messages = discordCloneContext.Messages.Where(m => m.ChannelId == channelId);
+                if(messages.Count() > 0)
+                {
+                    discordCloneContext.Messages.RemoveRange(messages);
+                    await discordCloneContext.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
         }
 
         //[HttpPost("Edit")]

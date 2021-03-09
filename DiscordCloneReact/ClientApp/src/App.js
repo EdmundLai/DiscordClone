@@ -22,17 +22,6 @@ export default function App(){
     const [currentChannel, setCurrentChannel] = useState(null);
 
     useEffect(() => {
-        const getServer1 = async () => {
-            const server = await requestController.getServerByServerId(1);
-            setCurrentServer(server);
-        }
-
-        const getChannel1 = async () => {
-            const channel = await requestController.getChannelByChannelId(1);
-            console.log(channel);
-            setCurrentChannel(channel);
-        }
-
         const setInitialServerAndChannel = async () => {
             const servers = await requestController.getServers();
             if (servers.length > 0) {
@@ -47,8 +36,6 @@ export default function App(){
             }
         }
 
-        //getServer1();
-        //getChannel1();
         setInitialServerAndChannel();
 
     }, []);
@@ -88,5 +75,3 @@ export default function App(){
     );
 
 }
-
-

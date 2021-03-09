@@ -1,0 +1,17 @@
+﻿.ChannelItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ChannelText, .ChannelDeleteButton {
+    cursor: pointer;
+}
+
+.CurrentChannel {
+    color: #ffffff;
+}
+
+.DeleteChannelModalButtons {
+    display: flex;
+    justify-content: end;
+}

@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { useFormik } from 'formik';
 import Modal from 'react-modal';
+
+import ChannelModalContent from '../ChannelModalContent/ChannelModalContent';
+import ChannelItem from '../ChannelItem/ChannelItem';
 
 import './ChannelSidebar.css';
 
@@ -29,6 +31,9 @@ function ChannelSidebar(props) {
                 channel={channel}
                 currChannelId={props.channel.channelId}
                 setCurrentChannel={props.setCurrentChannel}
+                setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                setChannelsNeedUpdate={setChannelsNeedUpdate}
+                serverId={props.server.serverId}
             />
         );
     }) : <></>;
@@ -83,65 +88,6 @@ function ChannelSidebar(props) {
             </Modal>
         </div>
     );
-}
-
-function ChannelModalContent(props) {
-
-    const formik = useFormik({
-        initialValues: { channelName: "" },
-        onSubmit: async (values) => {
-            //console.log(values.channelName);
-            await createChannel(values.channelName);
-            props.setChannelsNeedUpdate(true);
-            props.closeModal();
-        }
-    });
-
-    async function createChannel(channelName) {
-        await requestController.addChannelToServer(channelName, props.serverId);
-    }
-
-    return (
-        <div className="ChannelModalContent">
-            <h3>Create New Channel</h3>
-            <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="channelName">Channel Name: </label>
-                <br></br>
-                <input
-                    id="channelName"
-                    name="channelName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.channelName}
-                    required
-                />
-                <div>
-                    <button onClick={props.closeModal}>Cancel</button>
-                    <button type="submit">Create Channel</button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-function ChannelItem(props) {
-
-    const channel = props.channel;
-
-    const currChannelId = props.currChannelId;
-
-    const channelTextClass =
-        channel.channelId === currChannelId ? "CurrentChannel" : "";
-
-    function changeChannel() {
-        props.setCurrentChannel(channel);
-    }
-
-    return (
-        <div className="ChannelItem" onClick={changeChannel}>
-            <span className={channelTextClass}># {channel.channelName}</span>
-        </div>
-        );
 }
 
 export default ChannelSidebar;

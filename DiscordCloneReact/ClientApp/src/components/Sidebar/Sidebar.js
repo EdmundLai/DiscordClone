@@ -11,6 +11,7 @@ function Sidebar(props) {
             server={props.currentServer}
             channel={props.currentChannel}
             setCurrentChannel={props.setCurrentChannel}
+            setCurrentServerAndChannel={props.setCurrentServerAndChannel}
         /> : <></>;
 
     return (
