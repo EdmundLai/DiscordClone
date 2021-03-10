@@ -97,9 +97,28 @@ namespace DiscordCloneReact.Controllers
                 }
                 return true;
             }
-            catch (DbUpdateConcurrencyException)
+            catch
             {
                 return false;
+            }
+        }
+
+        [HttpDelete("deleteByServerId")]
+        public async Task DeleteByServerId(int serverId)
+        {
+            try
+            {
+                var channelIds = discordCloneContext.Channels
+                    .Where(c => c.ServerId == serverId)
+                    .Select(c => c.ChannelId);
+                foreach (int id in channelIds)
+                {
+                    await DeleteByChannelId(id);
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
 

@@ -44,7 +44,7 @@ async function getServerChannels(serverId) {
     try {
         const result = await axios.get(`${apiEndpoint}/api/Channels?serverId=${serverId}`);
         return result.data;
-    } catch(e) {
+    } catch (e) {
         console.log("Error from getServerChannels");
         console.log(e);
     }

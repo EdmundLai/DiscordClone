@@ -1,11 +1,11 @@
-﻿import React from 'react';
+import React from "react";
 
 function ServerItem(props) {
     const server = props.server;
 
     function getInitials(serverName) {
         const serverNameWords = serverName.split(" ");
-        return serverNameWords.map(word => word[0]).join("");
+        return serverNameWords.map((word) => word[0]).join("");
     }
 
     function setServer() {
@@ -14,7 +14,11 @@ function ServerItem(props) {
 
     const serverInitials = getInitials(server.serverName);
 
-    const cssServerItemClassName = props.selectedServer == null || props.selectedServer.serverId !== server.serverId ? "ServerItem" : "SelectedServer ServerItem";
+    const cssServerItemClassName =
+        props.selectedServer == null ||
+            props.selectedServer.serverId !== server.serverId
+            ? "ServerItem"
+            : "SelectedServer ServerItem";
 
     return (
         <div onClick={setServer} className={cssServerItemClassName}>

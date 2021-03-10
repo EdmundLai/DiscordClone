@@ -65,5 +65,19 @@ namespace DiscordCloneReact.Controllers
                 return false;
             }
         }
+
+        [HttpDelete("deleteByServerId")]
+        public async Task DeleteByServerId(int serverId)
+        {
+            try
+            {
+                var channels = discordCloneContext.Channels.Where(c => c.ServerId == serverId);
+                discordCloneContext.Channels.RemoveRange(channels);
+                await discordCloneContext.SaveChangesAsync();
+            } catch
+            {
+                throw;
+            }
+        }
     }
 }

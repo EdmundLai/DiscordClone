@@ -1,13 +1,13 @@
-﻿import React from 'react';
+import React from "react";
 
-import ServerSidebar from '../ServerSidebar/ServerSidebar';
-import ChannelSidebar from '../ChannelSidebar/ChannelSidebar';
+import ServerSidebar from "../ServerSidebar/ServerSidebar";
+import ChannelSidebar from "../ChannelSidebar/ChannelSidebar";
 
-import './Sidebar.css';
+import "./Sidebar.css";
 
 function Sidebar(props) {
-    const channelSidebar = props.currentServer != null ?
-        <ChannelSidebar {...props}/> : <></>;
+    const channelSidebar =
+        props.currentServer != null ? <ChannelSidebar {...props} /> : <></>;
 
     return (
         <div className="Sidebar">

@@ -1,10 +1,9 @@
-﻿import React from 'react';
-import { useFormik } from 'formik';
+import React from "react";
+import { useFormik } from "formik";
 
-var requestController = require('../../api/requestController');
+var requestController = require("../../api/requestController");
 
 function ChannelModalContent(props) {
-
     const formik = useFormik({
         initialValues: { channelName: "" },
         onSubmit: async (values) => {
@@ -12,11 +11,14 @@ function ChannelModalContent(props) {
             await createChannel(values.channelName);
             props.setChannelsNeedUpdate(true);
             props.closeModal();
-        }
+        },
     });
 
     async function createChannel(channelName) {
-        await requestController.addChannelToServer(channelName, props.currentServer.serverId);
+        await requestController.addChannelToServer(
+            channelName,
+            props.currentServer.serverId
+        );
     }
 
     return (

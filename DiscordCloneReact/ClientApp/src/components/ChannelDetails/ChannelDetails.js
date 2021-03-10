@@ -1,5 +1,5 @@
-﻿import React, { useState } from 'react';
-import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 import Modal from 'react-modal';
 
 import ChannelModalContent from '../ChannelModalContent/ChannelModalContent';
@@ -7,17 +7,31 @@ import ChannelItem from '../ChannelItem/ChannelItem';
 
 import './ChannelDetails.css';
 
+var requestController = require('../../api/requestController');
+
 function ChannelDetails(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [channels, setChannels] = useState([]);
+    const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
 
-    const { channels, ...otherProps } = props;
+    useEffect(() => {
+        const getChannelsForServer = async () => {
+            const channelData = await requestController.getServerChannels(props.currentServer.serverId);
+
+            setChannels(channelData);
+        }
+
+        getChannelsForServer();
+        setChannelsNeedUpdate(false);
+    }, [props.currentServer, channelsNeedUpdate]);
 
     const channelContent = props.currentChannel !== null ? channels.map(channel => {
         return (
             <ChannelItem
                 key={channel.channelId}
                 channel={channel}
-                {...otherProps}
+                setChannelsNeedUpdate={setChannelsNeedUpdate}
+                {...props}
             />
         );
     }) : <></>;
@@ -64,7 +78,7 @@ function ChannelDetails(props) {
             >
                 <ChannelModalContent
                     currentServer={props.currentServer}
-                    setChannelsNeedUpdate={props.setChannelsNeedUpdate}
+                    setChannelsNeedUpdate={setChannelsNeedUpdate}
                     closeModal={closeModal} />
             </Modal>
         </div>

@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import Chat from './components/Chat';
+import Modal from 'react-modal';
+//import { Route } from 'react-router';
+
+//import { Layout } from './components/Layout';
+//import { Home } from './components/Home';
+//import Chat from './components/Chat';
+//import TestComponent from './components/TestComponent';
 
 import Sidebar from './components/Sidebar/Sidebar';
 
 import ChannelMessages from './components/ChannelMessages/ChannelMessages';
 
-import TestComponent from './components/TestComponent';
-
 import './App.css'
 
 var requestController = require('./api/requestController');
 
-export default function App(){
+export default function App() {
 
     //static displayName = App.name;
 
@@ -63,8 +64,10 @@ export default function App(){
 
     const channelContent = currentChannel != null ? <ChannelMessages channel={currentChannel} /> : <></>;
 
+    Modal.setAppElement('#root');
+
     return (
-          <div className="App">
+        <div className="App">
             <Sidebar
                 currentServer={currentServer}
                 currentChannel={currentChannel}

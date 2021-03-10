@@ -1,20 +1,21 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import './ChannelMessages.css';
+import "./ChannelMessages.css";
 
-var requestController = require('../../api/requestController');
+var requestController = require("../../api/requestController");
 
 function ChannelMessages(props) {
-
     const [messages, setMessages] = useState([]);
     const [channelName, setChannelName] = useState("");
 
     useEffect(() => {
         const getChannelMessages = async () => {
-            const messageData = await requestController.getChannelMessages(props.channel.channelId);
+            const messageData = await requestController.getChannelMessages(
+                props.channel.channelId
+            );
 
             setMessages(messageData);
-        }
+        };
 
         getChannelMessages();
         setChannelName(props.channel.channelName);
@@ -23,7 +24,7 @@ function ChannelMessages(props) {
     return (
         <div className="ChannelMessages">
             <h3 className="ChannelHeading"># {channelName}</h3>
-            {messages.map(m => {
+            {messages.map((m) => {
                 return (
                     <div key={m.messageId}>
                         {m.userName} : {m.messageContent}
@@ -32,7 +33,6 @@ function ChannelMessages(props) {
             })}
         </div>
     );
-
 }
 
 export default ChannelMessages;

@@ -1,13 +1,13 @@
-﻿import React, { useState, useEffect } from "react";
-import Modal from 'react-modal';
-import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import { HomeOutlined, PlusOutlined } from "@ant-design/icons";
 
-import ServerItem from '../ServerItem/ServerItem';
-import ServerModalContent from '../ServerModalContent/ServerModalContent';
+import ServerItem from "../ServerItem/ServerItem";
+import ServerModalContent from "../ServerModalContent/ServerModalContent";
 
-import './ServerSidebar.css';
+import "./ServerSidebar.css";
 
-var requestController = require('../../api/requestController');
+var requestController = require("../../api/requestController");
 
 function ServerSidebar(props) {
     const [servers, setServers] = useState([]);
@@ -19,7 +19,7 @@ function ServerSidebar(props) {
             const serverData = await requestController.getServers();
 
             setServers(serverData);
-        }
+        };
 
         getServers();
         setServerListNeedsUpdate(false);
@@ -27,24 +27,24 @@ function ServerSidebar(props) {
 
     const customStyles = {
         overlay: {
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)'
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
         },
         content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            background: '#36393f',
-            border: 'none',
-            color: '#ffffff'
-        }
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            background: "#36393f",
+            border: "none",
+            color: "#ffffff",
+        },
     };
 
     function openModal() {
@@ -59,11 +59,14 @@ function ServerSidebar(props) {
         props.setCurrentServerAndChannel();
     }
 
-    const serverHomeCssClass = props.currentServer == null ? "SelectedServer ServerHome" : "ServerHome";
+    const serverHomeCssClass =
+        props.currentServer == null ? "SelectedServer ServerHome" : "ServerHome";
 
     return (
         <div className="ServerSidebar">
-            <div onClick={resetServer} className={serverHomeCssClass}><HomeOutlined /></div>
+            <div onClick={resetServer} className={serverHomeCssClass}>
+                <HomeOutlined />
+            </div>
             {servers.map((server) => {
                 return (
                     <ServerItem
@@ -74,11 +77,10 @@ function ServerSidebar(props) {
                     />
                 );
             })}
-            <div onClick={openModal} className="NewServerButton"><PlusOutlined /></div>
-            <Modal
-                isOpen={modalIsOpen}
-                style={customStyles}
-            >
+            <div onClick={openModal} className="NewServerButton">
+                <PlusOutlined />
+            </div>
+            <Modal isOpen={modalIsOpen} style={customStyles}>
                 <ServerModalContent
                     setCurrentServerAndChannel={props.setCurrentServerAndChannel}
                     setServerListNeedsUpdate={setServerListNeedsUpdate}

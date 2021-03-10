@@ -1,11 +1,10 @@
-﻿import React from 'react';
+import React from "react";
 
-import { useFormik } from 'formik';
+import { useFormik } from "formik";
 
-var requestController = require('../../api/requestController');
+var requestController = require("../../api/requestController");
 
 function ServerModalContent(props) {
-
     async function createNewServer(serverName) {
         const server = await requestController.addNewServer(serverName);
         await requestController.addChannelToServer("general", server.serverId);
@@ -22,7 +21,7 @@ function ServerModalContent(props) {
             props.setCurrentServerAndChannel(serverId);
             resetForm();
             props.closeModal();
-        }
+        },
     });
 
     return (
@@ -44,7 +43,7 @@ function ServerModalContent(props) {
                 </div>
             </form>
         </div>
-        );
+    );
 }
 
 export default ServerModalContent;

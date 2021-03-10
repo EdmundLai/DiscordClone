@@ -29,5 +29,19 @@ namespace DiscordCloneReact.Controllers
             }
             return discordCloneContext.ServerMembers.ToList();
         }
+
+        [HttpDelete("deleteByServerId")]
+        public async Task DeleteServerMembersByServer(int serverId)
+        {
+            try
+            {
+                var serverMembers = discordCloneContext.ServerMembers.Where(sm => sm.ServerId == serverId);
+                discordCloneContext.ServerMembers.RemoveRange(serverMembers);
+                await discordCloneContext.SaveChangesAsync();
+            } catch
+            {
+                throw;
+            }
+        }
     }
 }
