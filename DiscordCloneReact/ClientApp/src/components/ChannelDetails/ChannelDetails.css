@@ -1,0 +1,9 @@
+﻿.ChannelsHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.CreateChannelButton {
+    cursor: pointer;
+}

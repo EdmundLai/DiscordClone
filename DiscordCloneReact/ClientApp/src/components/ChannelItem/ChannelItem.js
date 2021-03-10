@@ -1,13 +1,16 @@
 ﻿import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import {
+    CloseOutlined
+} from '@ant-design/icons';
+
 import './ChannelItem.css'
 
 var requestController = require('../../api/requestController');
 
 function ChannelItem(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const channel = props.channel;
 
     function openModal() {
         setModalIsOpen(true);
@@ -39,35 +42,33 @@ function ChannelItem(props) {
         }
     };
 
-    const currChannelId = props.currChannelId;
-
     const channelTextClass =
-        channel.channelId === currChannelId ? "CurrentChannel ChannelText" : "ChannelText";
+        props.channel.channelId === props.currentChannel.channelId ? "CurrentChannel ChannelText" : "ChannelText";
 
     function changeChannel() {
-        props.setCurrentChannel(channel);
+        props.setCurrentChannel(props.channel);
     }
 
     async function deleteChannelAndClose() {
         //console.log(`deleting channel with channel id of ${channel.channelId}`);
-        await requestController.deleteChannelFromServer(channel.channelId);
+        await requestController.deleteChannelFromServer(props.channel.channelId);
         props.setChannelsNeedUpdate(true);
-        props.setCurrentServerAndChannel(props.serverId);
+        props.setCurrentServerAndChannel(props.currentServer.serverId);
 
         closeModal();
     }
 
     return (
         <div className="ChannelItem" >
-            <span onClick={changeChannel} className={channelTextClass}># {channel.channelName}</span>
-            <span className="ChannelDeleteButton" onClick={openModal}>X</span>
+            <span onClick={changeChannel} className={channelTextClass}># {props.channel.channelName}</span>
+            <span className="ChannelDeleteButton" onClick={openModal}><CloseOutlined /></span>
             <Modal
                 isOpen={modalIsOpen}
                 style={customStyles}
             >
                 <div className="DeleteChannelModal">
                     <h4>Delete Channel</h4>
-                    <p>Are you sure you want to delete # {channel.channelName}?</p>
+                    <p>Are you sure you want to delete # {props.channel.channelName}?</p>
                     <div className="DeleteChannelModalButtons">
                         <button onClick={closeModal}>Cancel</button>
                         <button onClick={deleteChannelAndClose}>Confirm</button>

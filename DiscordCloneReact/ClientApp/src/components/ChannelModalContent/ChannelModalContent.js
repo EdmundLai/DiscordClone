@@ -16,7 +16,7 @@ function ChannelModalContent(props) {
     });
 
     async function createChannel(channelName) {
-        await requestController.addChannelToServer(channelName, props.serverId);
+        await requestController.addChannelToServer(channelName, props.currentServer.serverId);
     }
 
     return (

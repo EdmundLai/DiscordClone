@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import Modal from 'react-modal';
+import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
 
 import ServerItem from '../ServerItem/ServerItem';
 import ServerModalContent from '../ServerModalContent/ServerModalContent';
@@ -62,7 +63,7 @@ function ServerSidebar(props) {
 
     return (
         <div className="ServerSidebar">
-            <div onClick={resetServer} className={serverHomeCssClass}>Home</div>
+            <div onClick={resetServer} className={serverHomeCssClass}><HomeOutlined /></div>
             {servers.map((server) => {
                 return (
                     <ServerItem
@@ -73,7 +74,7 @@ function ServerSidebar(props) {
                     />
                 );
             })}
-            <div onClick={openModal} className="NewServerButton">+</div>
+            <div onClick={openModal} className="NewServerButton"><PlusOutlined /></div>
             <Modal
                 isOpen={modalIsOpen}
                 style={customStyles}

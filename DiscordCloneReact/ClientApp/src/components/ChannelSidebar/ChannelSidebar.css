@@ -5,12 +5,11 @@
     user-select: none;
 }
 
-.ChannelsHeader {
+.ServerSettingsHeader {
     display: flex;
     justify-content: space-between;
-    width: 200px;
 }
 
-.CreateChannelButton {
+.ServerSettingsButton {
     cursor: pointer;
 }

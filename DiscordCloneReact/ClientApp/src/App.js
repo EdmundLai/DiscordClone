@@ -45,6 +45,7 @@ export default function App(){
         if (typeof serverChannels !== 'undefined' && serverChannels.length > 0) {
             const initialChannel = serverChannels[0];
             setCurrentChannel(initialChannel);
+            console.log(currentChannel);
         }
     }
 

@@ -7,12 +7,7 @@ import './Sidebar.css';
 
 function Sidebar(props) {
     const channelSidebar = props.currentServer != null ?
-        <ChannelSidebar
-            server={props.currentServer}
-            channel={props.currentChannel}
-            setCurrentChannel={props.setCurrentChannel}
-            setCurrentServerAndChannel={props.setCurrentServerAndChannel}
-        /> : <></>;
+        <ChannelSidebar {...props}/> : <></>;
 
     return (
         <div className="Sidebar">
