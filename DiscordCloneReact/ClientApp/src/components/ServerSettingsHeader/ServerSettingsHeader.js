@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
+import { useFormik } from "formik";
 import Modal from "react-modal";
-import { SettingOutlined } from "@ant-design/icons";
+import { SettingOutlined, CloseOutlined } from "@ant-design/icons";
+
+import "./ServerSettingsHeader.css";
 
 function ServerSettingsHeader(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -16,15 +19,15 @@ function ServerSettingsHeader(props) {
             backgroundColor: "rgba(0, 0, 0, 0.7)",
         },
         content: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
-            transform: "translate(-50%, -50%)",
+            top: "20%",
+            left: "20%",
+            right: "20%",
+            bottom: "20%",
+
+
             background: "#36393f",
             border: "none",
-            color: "#ffffff",
+            color: "#ffffff"
         },
     };
 
@@ -50,14 +53,80 @@ function ServerSettingsHeader(props) {
                 <SettingOutlined onClick={openServerSettingsModal} />
             </div>
             <Modal isOpen={modalIsOpen} style={customStyles}>
-                <div className="ServerSettingsModal">
-                    <h4>Server Settings</h4>
-                    <h5>Edit Server</h5>
-                    <h5>Delete Server</h5>
-
-                    <button onClick={closeModal}>Cancel</button>
-                </div>
+                <ServerSettingsModal
+                    currentServer={props.currentServer}
+                    closeModal={closeModal}
+                />
             </Modal>
+        </div>
+    );
+}
+
+function ServerSettingsModal(props) {
+    const [actionType, setActionType] = useState("edit");
+
+    var modalContent = <></>;
+
+    if (actionType === "edit") {
+        modalContent = <EditServerNameContainer currentServer={props.currentServer} />;
+    } else {
+        modalContent = <div>Delete Server Content</div>;
+    }
+
+    function setToEdit() {
+        setActionType("edit");
+    }
+
+    function setToDelete() {
+        setActionType("delete");
+    }
+
+    return (
+        <div className="ServerSettingsModal">
+            <div className="ServerSettingsModalHeader">
+                <CloseOutlined onClick={props.closeModal} />
+            </div>
+            <div className="ServerSettingsModalContainer">
+                <div className="ServerSettingsModalMenu">
+                    <div>
+                        <span className="ServerSettingsOption" onClick={setToEdit}>Edit Server</span>
+                    </div>
+                    <div >
+                        <span className="ServerSettingsOption" onClick={setToDelete}>Delete Server</span>
+                    </div>
+                </div>
+                <div className="ServerSettingsModalContent">
+                    {modalContent}
+                </div>
+            </div>
+        </div>
+    );
+
+}
+
+function EditServerNameContainer(props) {
+
+    const formik = useFormik({
+        initialValues: { serverName: props.currentServer.serverName },
+        onSubmit: async (values) => {
+            console.log(values.serverName);
+        },
+    });
+
+    return (
+        <div className="EditServerNameContainer">
+            <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="serverName">Server Name</label>
+                <input
+                    id="serverName"
+                    name="serverName"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.serverName}
+                    required
+                />
+                <button type="submit">Save Changes</button>
+            </form>
         </div>
     );
 }

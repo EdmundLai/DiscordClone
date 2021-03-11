@@ -48,7 +48,7 @@ namespace DiscordCloneReact.Controllers
             }
         }
 
-        // Corresponding messages and server members must be deleted before server is deleted
+        // Corresponding messages, server members, and channels must be deleted before server is deleted
         [HttpDelete("delete")]
         public async Task DeleteServer(int serverId)
         {
@@ -61,6 +61,21 @@ namespace DiscordCloneReact.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpPost("editServerName")]
+        public async Task EditServerName(int serverId, string newName)
+        {
+            try
+            {
+                var server = discordCloneContext.Servers.Find(serverId);
+                server.ServerName = newName;
+                await discordCloneContext.SaveChangesAsync();
+            } catch
+            {
+                throw;
+            }
+            
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿.ServerSettingsModal {
+    user-select: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ServerSettingsOption {
+    cursor: pointer;
+}
+
+.ServerSettingsModalHeader {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ServerSettingsModalContainer {
+    display: flex;
+    flex: 1;
+}
+
+.ServerSettingsModalMenu {
+    flex: 3;
+    border-right: 2px solid white;
+}
+
+.ServerSettingsModalContent {
+    flex: 7;
+    padding-left: 20px;
+}
