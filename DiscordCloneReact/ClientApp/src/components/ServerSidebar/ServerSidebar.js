@@ -12,7 +12,6 @@ var requestController = require("../../api/requestController");
 function ServerSidebar(props) {
     const [servers, setServers] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [serverListNeedsUpdate, setServerListNeedsUpdate] = useState(false);
 
     useEffect(() => {
         const getServers = async () => {
@@ -22,8 +21,8 @@ function ServerSidebar(props) {
         };
 
         getServers();
-        setServerListNeedsUpdate(false);
-    }, [serverListNeedsUpdate]);
+        props.setServerListNeedsUpdate(false);
+    }, [props]);
 
     const customStyles = {
         overlay: {
@@ -83,7 +82,7 @@ function ServerSidebar(props) {
             <Modal isOpen={modalIsOpen} style={customStyles}>
                 <ServerModalContent
                     setCurrentServerAndChannel={props.setCurrentServerAndChannel}
-                    setServerListNeedsUpdate={setServerListNeedsUpdate}
+                    setServerListNeedsUpdate={props.setServerListNeedsUpdate}
                     closeModal={closeModal}
                 />
             </Modal>

@@ -6,6 +6,8 @@ import { SettingOutlined, CloseOutlined } from "@ant-design/icons";
 
 import "./ServerSettingsHeader.css";
 
+var requestController = require("../../api/requestController");
+
 function ServerSettingsHeader(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -54,7 +56,7 @@ function ServerSettingsHeader(props) {
             </div>
             <Modal isOpen={modalIsOpen} style={customStyles}>
                 <ServerSettingsModal
-                    currentServer={props.currentServer}
+                    {...props}
                     closeModal={closeModal}
                 />
             </Modal>
@@ -68,7 +70,9 @@ function ServerSettingsModal(props) {
     var modalContent = <></>;
 
     if (actionType === "edit") {
-        modalContent = <EditServerNameContainer currentServer={props.currentServer} />;
+        modalContent = <EditServerNameContainer
+            {...props}
+        />;
     } else {
         modalContent = <div>Delete Server Content</div>;
     }
@@ -108,23 +112,30 @@ function EditServerNameContainer(props) {
 
     const formik = useFormik({
         initialValues: { serverName: props.currentServer.serverName },
-        onSubmit: async (values) => {
-            console.log(values.serverName);
+        onSubmit: async (values, { resetForm }) => {
+            //console.log(values.serverName);
+            await requestController.editServerName(props.currentServer.serverId, values.serverName);
+            props.setCurrentServerAndChannel(props.currentServer.serverId);
+            props.setServerListNeedsUpdate(true);
+            resetForm();
+            props.closeModal();
         },
     });
 
     return (
         <div className="EditServerNameContainer">
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="serverName">Server Name</label>
-                <input
-                    id="serverName"
-                    name="serverName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.serverName}
-                    required
-                />
+                <div>
+                    <label htmlFor="serverName">Server Name: </label>
+                    <input
+                        id="serverName"
+                        name="serverName"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.serverName}
+                        required
+                    />
+                </div>
                 <button type="submit">Save Changes</button>
             </form>
         </div>

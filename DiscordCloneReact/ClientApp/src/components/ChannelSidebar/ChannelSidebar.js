@@ -8,7 +8,10 @@ import "./ChannelSidebar.css";
 function ChannelSidebar(props) {
     return (
         <div className="ChannelSidebar">
-            <ServerSettingsHeader currentServer={props.currentServer} />
+            <ServerSettingsHeader currentServer={props.currentServer}
+                setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                setServerListNeedsUpdate={props.setServerListNeedsUpdate}
+            />
             <ChannelDetails {...props} />
         </div>
     );

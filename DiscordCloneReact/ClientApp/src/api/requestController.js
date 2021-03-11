@@ -108,7 +108,16 @@ async function addNewServer(serverName) {
     }
 }
 
+async function editServerName(serverId, serverName) {
+    try {
+        await axios.post(`${apiEndpoint}/api/Servers/editServerName?serverId=${serverId}&newName=${serverName}`);
+    } catch (e) {
+        console.log("Error from editServerName");
+        console.log(e);
+    }
+}
 
+exports.editServerName = editServerName;
 
 exports.sendMessage = sendMessage;
 

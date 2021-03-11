@@ -21,6 +21,7 @@ export default function App() {
 
     const [currentServer, setCurrentServer] = useState(null);
     const [currentChannel, setCurrentChannel] = useState(null);
+    
 
     useEffect(() => {
         const setInitialServerAndChannel = async () => {
