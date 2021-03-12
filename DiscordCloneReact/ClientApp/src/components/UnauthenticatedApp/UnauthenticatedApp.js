@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useFormik } from "formik";
 
 import { Switch, Link, Route } from 'react-router-dom';
 
 import './UnauthenticatedApp.css';
+
+import CredentialsForm from '../CredentialsForm/CredentialsForm';
+
+var requestController = require("../../api/requestController");
 
 function UnauthenticatedApp(props) {
     return (
@@ -19,16 +22,16 @@ function UnauthenticatedApp(props) {
                     <RegistrationPage />
                 </Route>
                 <Route path="/">
-                    <AuthenticationContainer />
+                    <WelcomePage />
                 </Route>
             </Switch>
         </div>
     );
 }
 
-function AuthenticationContainer(props) {
+function WelcomePage(props) {
     return (
-        <div className="AuthenticationContainer">
+        <div className="WelcomePage AuthenticationContainer">
             <h2 className="AuthenticationContainerHeading">Welcome to DiscordClone!</h2>
             <div className="AuthenticationMenu">
                 <div className="AuthenticationMenuOption">
@@ -54,7 +57,7 @@ function AuthenticationContainer(props) {
 
 function NoLoginPage() {
     return (
-        <div className="NoLoginPage">
+        <div className="NoLoginPage AuthenticationContainer">
             Here is my page for continuing without an account!
             <Link to="/">
                 <button>Back</button>
@@ -64,23 +67,38 @@ function NoLoginPage() {
 }
 
 function LoginPage() {
+
+    function handleCredentials(userName, password) {
+        console.log("Login Handler");
+        console.log(`username: ${userName}`);
+        console.log(`password: ${password}`);
+    }
+
     return (
-        <div className="LoginPage">
-            Here is my login page!
-            <Link to="/">
-                <button>Back</button>
-            </Link>
+        <div className="LoginPage AuthenticationContainer">
+            <h4>Login</h4>
+            <CredentialsForm
+                handleCredentials={handleCredentials}
+                submitButtonText="Login"
+            />
         </div>
     );
 }
 
-function RegistrationPage() {
+function RegistrationPage(props) {
+    function handleCredentials(userName, password) {
+        console.log("Registration Handler");
+        console.log(`username: ${userName}`);
+        console.log(`password: ${password}`);
+    }
+
     return (
-        <div className="RegistrationPage">
-            Here is my registration page!
-            <Link to="/">
-                <button>Back</button>
-            </Link>
+        <div className="RegistrationPage AuthenticationContainer">
+            <h4>Registration</h4>
+            <CredentialsForm
+                handleCredentials={handleCredentials}
+                submitButtonText="Register"
+            />
         </div>
     );
 }

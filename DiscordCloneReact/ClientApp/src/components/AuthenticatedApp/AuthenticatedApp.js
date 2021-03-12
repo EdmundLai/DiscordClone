@@ -14,22 +14,28 @@ function AuthenticatedApp(props) {
 
 
     useEffect(() => {
+        let isMounted = true;
         const setInitialServerAndChannel = async () => {
             const servers = await requestController.getServers();
             if (servers.length > 0) {
                 const initialServer = servers[0];
                 console.log(initialServer);
-                setCurrentServer(initialServer);
+                if (isMounted) {
+                    setCurrentServer(initialServer);
+                }
                 const serverChannels = await requestController.getServerChannels(initialServer.serverId);
                 if (serverChannels.length > 0) {
                     const initialChannel = serverChannels[0];
-                    setCurrentChannel(initialChannel);
+                    if (isMounted) {
+                        setCurrentChannel(initialChannel);
+                    }
                 }
             }
         }
 
         setInitialServerAndChannel();
 
+        return () => { isMounted = false; }
     }, []);
 
     async function setInitialChannelFromServerId(serverId) {

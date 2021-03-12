@@ -14,14 +14,18 @@ function ServerSidebar(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
         const getServers = async () => {
             const serverData = await requestController.getServers();
-
-            setServers(serverData);
+            if (isMounted) {
+                setServers(serverData);
+            }
         };
 
         getServers();
         props.setServerListNeedsUpdate(false);
+
+        return () => { isMounted = false;}
     }, [props]);
 
     const customStyles = {

@@ -1,6 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 
+import { CloseOutlined } from "@ant-design/icons";
+
 var requestController = require("../../api/requestController");
 
 function ChannelModalContent(props) {
@@ -23,20 +25,25 @@ function ChannelModalContent(props) {
 
     return (
         <div className="ChannelModalContent">
-            <h3>Create New Channel</h3>
+            <div className="TopBarModal">
+                <h3 className="ModalHeader">Create New Channel</h3>
+                <CloseOutlined onClick={props.closeModal} />
+            </div>
+
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="channelName">Channel Name: </label>
-                <br></br>
-                <input
-                    id="channelName"
-                    name="channelName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.channelName}
-                    required
-                />
-                <div>
-                    <button onClick={props.closeModal}>Cancel</button>
+                <div className="ModalFormContent">
+                    <label htmlFor="channelName">Channel Name: </label>
+                    <br></br>
+                    <input
+                        id="channelName"
+                        name="channelName"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.channelName}
+                        required
+                    />
+                </div>
+                <div className="ModalSubmitContainer">
                     <button type="submit">Create Channel</button>
                 </div>
             </form>

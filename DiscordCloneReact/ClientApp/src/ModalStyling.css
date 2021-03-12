@@ -1,0 +1,20 @@
+﻿
+.TopBarModal {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.ModalHeader {
+    margin-right: 20px;
+}
+
+.ModalSubmitContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ModalFormContent {
+    margin-bottom: 20px;
+}

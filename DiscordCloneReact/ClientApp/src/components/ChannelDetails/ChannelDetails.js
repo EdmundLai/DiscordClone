@@ -5,6 +5,8 @@ import Modal from 'react-modal';
 import ChannelModalContent from '../ChannelModalContent/ChannelModalContent';
 import ChannelItem from '../ChannelItem/ChannelItem';
 
+/*import { CloseOutlined } from "@ant-design/icons";*/
+
 import './ChannelDetails.css';
 
 var requestController = require('../../api/requestController');
@@ -15,14 +17,18 @@ function ChannelDetails(props) {
     const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
         const getChannelsForServer = async () => {
             const channelData = await requestController.getServerChannels(props.currentServer.serverId);
-
-            setChannels(channelData);
+            if (isMounted) {
+                setChannels(channelData);
+            }
         }
 
         getChannelsForServer();
         setChannelsNeedUpdate(false);
+
+        return () => { isMounted = false; }
     }, [props.currentServer, channelsNeedUpdate]);
 
     const channelContent = props.currentChannel !== null ? channels.map(channel => {

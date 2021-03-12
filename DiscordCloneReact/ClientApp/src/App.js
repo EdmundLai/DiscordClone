@@ -11,7 +11,8 @@ import AuthenticatedApp from './components/AuthenticatedApp/AuthenticatedApp';
 
 import UnauthenticatedApp from './components/UnauthenticatedApp/UnauthenticatedApp';
 
-import './App.css'
+import './App.css';
+import './ModalStyling.css';
 
 
 export default function App() {
