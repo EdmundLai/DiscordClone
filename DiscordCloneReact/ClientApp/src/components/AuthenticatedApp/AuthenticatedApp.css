@@ -1,0 +1,6 @@
+﻿.AuthenticatedApp {
+    display: flex;
+    flex-direction: row;
+    background-color: #36393f;
+    height: 100%;
+}

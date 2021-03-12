@@ -2,8 +2,6 @@ var axios = require("axios");
 
 const apiEndpoint = "https://localhost:5001";
 
-// TODO: implement create server and create channel methods
-
 async function sendMessage(userId, channelId, messageContent) {
     try {
         const result = await axios.post(`${apiEndpoint}/api/Messages/create`, {
@@ -117,22 +115,44 @@ async function editServerName(serverId, serverName) {
     }
 }
 
+async function checkUserNameTaken(userName) {
+    try {
+        const result = await axios.get(`${apiEndpoint}/api/Users/userExists?userName=${userName}`);
+        return result;
+    } catch (e) {
+        console.log("Error from checkUsernameNotTaken");
+        console.log(e);
+    }
+}
+
+async function addUser(userName, password) {
+    try {
+        await axios.post(`${apiEndpoint}/api/Users/addUser?userName=${userName}&password=${password}`);
+    } catch (e) {
+        console.log("Error from addUser");
+        console.log(e);
+    }
+}
+
+async function verifyUser(userName, password) {
+    try {
+        return await axios.post(`${apiEndpoint}/api/Users/verifyUser?userName=${userName}&password=${password}`);
+    } catch (e) {
+        console.log("Error from verifyUser");
+        console.log(e);
+    }
+}
+
 exports.editServerName = editServerName;
-
 exports.sendMessage = sendMessage;
-
 exports.getServers = getServers;
-
 exports.getServerChannels = getServerChannels;
-
 exports.getChannelMessages = getChannelMessages;
-
 exports.getServerByServerId = getServerByServerId;
-
 exports.getChannelByChannelId = getChannelByChannelId;
-
 exports.addChannelToServer = addChannelToServer;
-
 exports.deleteChannelFromServer = deleteChannelFromServer;
-
 exports.addNewServer = addNewServer;
+exports.checkUserNameTaken = checkUserNameTaken;
+exports.addUser = addUser;
+exports.verifyUser = verifyUser;

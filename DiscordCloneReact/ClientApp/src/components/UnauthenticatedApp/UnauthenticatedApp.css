@@ -1,0 +1,30 @@
+﻿.UnauthenticatedApp {
+    background-color: #202225;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.AuthenticationContainer {
+    background-color: #36393f;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.AuthenticationContainerHeading {
+    margin-bottom: 20px;
+}
+
+.AuthenticationMenu {
+    display: flex;
+}
+
+.AuthenticationMenuOption {
+    flex: 1;
+}
