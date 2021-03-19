@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Switch, Link, Route } from 'react-router-dom';
+import { Switch, Link, Route, useHistory } from 'react-router-dom';
 
 import './UnauthenticatedApp.css';
 
@@ -9,18 +9,28 @@ import CredentialsForm from '../CredentialsForm/CredentialsForm';
 var requestController = require("../../api/requestController");
 
 function UnauthenticatedApp(props) {
+    const setLoggedInUserId = props.setLoggedInUserId;
+
     return (
         <div className="UnauthenticatedApp">
             <Switch>
                 <Route path="/NoLogin">
                     <NoLoginPage />
                 </Route>
-                <Route path="/Login">
-                    <LoginPage />
-                </Route>
-                <Route path="/Register">
-                    <RegistrationPage />
-                </Route>
+                <Route
+                    path="/Login" render={(props) =>
+                        <LoginPage {...props}
+                            setLoggedInUserId={setLoggedInUserId} />
+                }
+                />
+                <Route
+                    path="/Register"
+                    render={(props) =>
+                        <RegistrationPage {...props}
+                            setLoggedInUserId={setLoggedInUserId}
+                        />
+                    }
+                />
                 <Route path="/">
                     <WelcomePage />
                 </Route>
@@ -55,6 +65,7 @@ function WelcomePage(props) {
     );
 }
 
+// not implemented yet
 function NoLoginPage() {
     return (
         <div className="NoLoginPage AuthenticationContainer">
@@ -66,12 +77,23 @@ function NoLoginPage() {
     );
 }
 
-function LoginPage() {
+function LoginPage(props) {
+    let history = useHistory();
 
-    function handleCredentials(userName, password) {
+    async function handleCredentials(userName, password) {
         console.log("Login Handler");
-        console.log(`username: ${userName}`);
-        console.log(`password: ${password}`);
+        //console.log(`username: ${userName}`);
+        //console.log(`password: ${password}`);
+
+        const userVerified = await requestController.verifyUser(userName, password);
+        console.log(userVerified);
+        if (userVerified) {
+            const currUser = await requestController.getUserByUserName(userName);
+            console.log(currUser);
+            props.setLoggedInUserId(currUser.userId);
+            history.push("/");
+        }
+
     }
 
     return (
@@ -80,16 +102,26 @@ function LoginPage() {
             <CredentialsForm
                 handleCredentials={handleCredentials}
                 submitButtonText="Login"
+                registerUser={false}
             />
         </div>
     );
 }
 
 function RegistrationPage(props) {
-    function handleCredentials(userName, password) {
+    let history = useHistory();
+
+    async function handleCredentials(userName, password) {
         console.log("Registration Handler");
-        console.log(`username: ${userName}`);
-        console.log(`password: ${password}`);
+        //console.log(`username: ${userName}`);
+        //console.log(`password: ${password}`);
+
+        await requestController.addUser(userName, password);
+
+        const user = await requestController.getUserByUserName(userName);
+        console.log(user);
+        props.setLoggedInUserId(user.userId);
+        history.push("/");
     }
 
     return (
@@ -97,6 +129,7 @@ function RegistrationPage(props) {
             <h4>Registration</h4>
             <CredentialsForm
                 handleCredentials={handleCredentials}
+                registerUser={true}
                 submitButtonText="Register"
             />
         </div>

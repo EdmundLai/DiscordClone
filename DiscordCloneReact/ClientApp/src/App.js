@@ -16,27 +16,27 @@ import './ModalStyling.css';
 
 
 export default function App() {
-    const [authenticated, setAuthenticated] = useState(false);
-
-    function toggleAuthentication() {
-        setAuthenticated(!authenticated);
-    }
-
+    //const [authenticated, setAuthenticated] = useState(false);
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
 
     //static displayName = App.name;
     Modal.setAppElement('#root');
 
-    const authenticatedLabel = authenticated ? "Authenticated" : "Unauthenticated";
+    function logout() {
+        setLoggedInUserId(null);
+    }
 
-    const appContent = authenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />
+    //const authenticatedLabel = authenticated ? "Authenticated" : "Unauthenticated";
+
+    const appContent = loggedInUserId !== null ? <AuthenticatedApp
+        loggedInUserId={loggedInUserId}
+        logout={logout}
+    /> :
+        <UnauthenticatedApp setLoggedInUserId={setLoggedInUserId} />
 
     return (
         <BrowserRouter>
             <div className="App">
-                <div>
-                    Toggle Authenticated
-                <button onClick={toggleAuthentication}>{authenticatedLabel}</button>
-                </div>
                 {appContent}
             </div>
         </BrowserRouter>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { HomeOutlined, PlusOutlined } from "@ant-design/icons";
+import { HomeOutlined, PlusOutlined, CloseOutlined } from "@ant-design/icons";
 
 import ServerItem from "../ServerItem/ServerItem";
 import ServerModalContent from "../ServerModalContent/ServerModalContent";
@@ -25,7 +25,7 @@ function ServerSidebar(props) {
         getServers();
         props.setServerListNeedsUpdate(false);
 
-        return () => { isMounted = false;}
+        return () => { isMounted = false; }
     }, [props]);
 
     const customStyles = {
@@ -63,33 +63,40 @@ function ServerSidebar(props) {
     }
 
     const serverHomeCssClass =
-        props.currentServer == null ? "SelectedServer ServerHome" : "ServerHome";
+        props.currentServer == null ? "SelectedServer ServerHome ServerButton" : "ServerHome ServerButton";
 
     return (
         <div className="ServerSidebar">
-            <div onClick={resetServer} className={serverHomeCssClass}>
-                <HomeOutlined />
-            </div>
-            {servers.map((server) => {
-                return (
-                    <ServerItem
-                        selectedServer={props.currentServer}
-                        key={server.serverId}
-                        server={server}
+            <div>
+                <div onClick={resetServer} className={serverHomeCssClass}>
+                    <HomeOutlined />
+                </div>
+                {servers.map((server) => {
+                    return (
+                        <ServerItem
+                            selectedServer={props.currentServer}
+                            key={server.serverId}
+                            server={server}
+                            setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                        />
+                    );
+                })}
+                <div onClick={openModal} className="ServerButton NewServerButton">
+                    <PlusOutlined />
+                </div>
+                <Modal isOpen={modalIsOpen} style={customStyles}>
+                    <ServerModalContent
                         setCurrentServerAndChannel={props.setCurrentServerAndChannel}
+                        setServerListNeedsUpdate={props.setServerListNeedsUpdate}
+                        closeModal={closeModal}
                     />
-                );
-            })}
-            <div onClick={openModal} className="NewServerButton">
-                <PlusOutlined />
+                </Modal>
             </div>
-            <Modal isOpen={modalIsOpen} style={customStyles}>
-                <ServerModalContent
-                    setCurrentServerAndChannel={props.setCurrentServerAndChannel}
-                    setServerListNeedsUpdate={props.setServerListNeedsUpdate}
-                    closeModal={closeModal}
-                />
-            </Modal>
+            <div>
+                <div onClick={props.logout} className="ServerButton LogoutButton">
+                    <CloseOutlined />
+                </div>
+            </div>
         </div>
     );
 }

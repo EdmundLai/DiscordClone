@@ -1,9 +1,13 @@
 ﻿.ServerSidebar {
     background: #202225;
     color: #dcddde;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.ServerItem, .NewServerButton, .ServerHome {
+.ServerButton {
     display: flex;
     margin: 10px 5px;
     border-radius: 50%;
@@ -14,6 +18,10 @@
     align-items: center;
     cursor: pointer;
     user-select: none;
+}
+
+.LogoutButton {
+    background: red;
 }
 
 .SelectedServer {

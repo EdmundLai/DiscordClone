@@ -7,6 +7,16 @@
     cursor: pointer;
 }
 
+.ChannelText {
+    flex: 1;
+}
+
+.ChannelDeleteButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .CurrentChannel {
     color: #ffffff;
 }

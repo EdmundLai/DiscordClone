@@ -17,8 +17,8 @@ function ServerItem(props) {
     const cssServerItemClassName =
         props.selectedServer == null ||
             props.selectedServer.serverId !== server.serverId
-            ? "ServerItem"
-            : "SelectedServer ServerItem";
+            ? "ServerItem ServerButton"
+            : "SelectedServer ServerItem ServerButton";
 
     return (
         <div onClick={setServer} className={cssServerItemClassName}>

@@ -59,7 +59,8 @@ function AuthenticatedApp(props) {
         }
     }
 
-    const channelContent = currentChannel != null ? <ChannelMessages channel={currentChannel} /> : <></>;
+    const channelContent = currentChannel != null ? <ChannelMessages channel={currentChannel} /> :
+        <HomepageContent loggedInUserId={props.loggedInUserId} />;
 
     return (
         <div className="AuthenticatedApp">
@@ -68,8 +69,34 @@ function AuthenticatedApp(props) {
                 currentChannel={currentChannel}
                 setCurrentChannel={setCurrentChannel}
                 setCurrentServerAndChannel={setCurrentServerAndChannel}
+                logout={props.logout}
             />
             {channelContent}
+        </div>
+    );
+}
+
+function HomepageContent(props) {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        let isMounted = true;
+        const getUser = async () => {
+            const currUser = await requestController.getUser(props.loggedInUserId);
+            if (isMounted) {
+                setUser(currUser);
+            }
+        }
+
+        getUser();
+        return () => { isMounted = false; }
+    }, [props.loggedInUserId]);
+
+    const greetingMessage = user == null ? "Welcome to DiscordClone!" : `Welcome to DiscordClone, ${user.userName}`;
+
+    return (
+        <div className="HomepageContent">
+            <h1>{greetingMessage}</h1>
         </div>
     );
 }

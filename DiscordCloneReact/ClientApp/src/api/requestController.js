@@ -118,7 +118,7 @@ async function editServerName(serverId, serverName) {
 async function checkUserNameTaken(userName) {
     try {
         const result = await axios.get(`${apiEndpoint}/api/Users/userExists?userName=${userName}`);
-        return result;
+        return result.data;
     } catch (e) {
         console.log("Error from checkUsernameNotTaken");
         console.log(e);
@@ -136,9 +136,30 @@ async function addUser(userName, password) {
 
 async function verifyUser(userName, password) {
     try {
-        return await axios.post(`${apiEndpoint}/api/Users/verifyUser?userName=${userName}&password=${password}`);
+        const result = await axios.get(`${apiEndpoint}/api/Users/verifyUser?userName=${userName}&password=${password}`);
+        return result.data;
     } catch (e) {
         console.log("Error from verifyUser");
+        console.log(e);
+    }
+}
+
+async function getUser(userId) {
+    try {
+        const result = await axios.get(`${apiEndpoint}/api/Users/userByUserId?userId=${userId}`);
+        return result.data;
+    } catch (e) {
+        console.log("Error from getUser");
+        console.log(e);
+    }
+}
+
+async function getUserByUserName(userName) {
+    try {
+        const result = await axios.get(`${apiEndpoint}/api/Users/userByUserName?userName=${userName}`);
+        return result.data;
+    } catch (e) {
+        console.log("Error from getUserByUserName");
         console.log(e);
     }
 }
@@ -156,3 +177,5 @@ exports.addNewServer = addNewServer;
 exports.checkUserNameTaken = checkUserNameTaken;
 exports.addUser = addUser;
 exports.verifyUser = verifyUser;
+exports.getUser = getUser;
+exports.getUserByUserName = getUserByUserName;

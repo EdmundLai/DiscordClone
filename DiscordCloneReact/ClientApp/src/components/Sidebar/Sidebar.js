@@ -21,6 +21,7 @@ function Sidebar(props) {
                 setCurrentServerAndChannel={props.setCurrentServerAndChannel}
                 serverListNeedsUpdate={serverListNeedsUpdate}
                 setServerListNeedsUpdate={setServerListNeedsUpdate}
+                logout={props.logout}
             />
             {channelSidebar}
         </div>
