@@ -40,7 +40,7 @@ function ChannelMessages(props) {
                 </div>
             );
         })}
-    </div> : <Chat />
+    </div> : <Chat channel={props.channel} />
 
     return (
         <div>
