@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
-import ChatWindow from './ChatWindow/ChatWindow';
-import ChatInput from './ChatInput/ChatInput';
+import ChatWindow from '../ChatWindow/ChatWindow';
+import ChatInput from '../ChatInput/ChatInput';
 
 function Chat() {
     const [connection, setConnection] = useState(null);
