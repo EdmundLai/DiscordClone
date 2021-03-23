@@ -10,7 +10,6 @@ function ChannelMessages(props) {
     const [chatOn, setChatOn] = useState(false);
 
     const [messages, setMessages] = useState([]);
-    const [channelName, setChannelName] = useState("");
 
     useEffect(() => {
         const getChannelMessages = async () => {
@@ -22,7 +21,6 @@ function ChannelMessages(props) {
         };
 
         getChannelMessages();
-        setChannelName(props.channel.channelName);
     }, [props.channel]);
 
     function toggleChatOn() {
@@ -32,7 +30,7 @@ function ChannelMessages(props) {
     const chatToggleText = !chatOn ? "Chat Off" : "Chat On";
 
     const channelContent = !chatOn ? <div className="ChannelMessages">
-        <h3 className="ChannelHeading"># {channelName}</h3>
+        <h3 className="ChannelHeading"># {props.channel.channelName}</h3>
         {messages.map((m) => {
             return (
                 <div key={m.messageId}>

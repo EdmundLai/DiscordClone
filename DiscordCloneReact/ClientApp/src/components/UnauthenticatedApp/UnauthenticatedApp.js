@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { Switch, Link, Route, useHistory } from 'react-router-dom';
+import CredentialsForm from '../CredentialsForm/CredentialsForm';
+import { CloseOutlined } from '@ant-design/icons';
 
 import './UnauthenticatedApp.css';
-
-import CredentialsForm from '../CredentialsForm/CredentialsForm';
 
 var requestController = require("../../api/requestController");
 
@@ -21,7 +20,7 @@ function UnauthenticatedApp(props) {
                     path="/Login" render={(props) =>
                         <LoginPage {...props}
                             setLoggedInUserId={setLoggedInUserId} />
-                }
+                    }
                 />
                 <Route
                     path="/Register"
@@ -98,13 +97,17 @@ function LoginPage(props) {
 
     return (
         <div className="LoginPage AuthenticationContainer">
-            <h4>Login</h4>
-            <CredentialsForm
-                handleCredentials={handleCredentials}
-                submitButtonText="Login"
-                registerUser={false}
-            />
+            <CloseButtonContainer />
+            <div className="FormContainer">
+                <h4>Login</h4>
+                <CredentialsForm
+                    handleCredentials={handleCredentials}
+                    submitButtonText="Login"
+                    registerUser={false}
+                />
+            </div>
         </div>
+
     );
 }
 
@@ -126,12 +129,26 @@ function RegistrationPage(props) {
 
     return (
         <div className="RegistrationPage AuthenticationContainer">
-            <h4>Registration</h4>
-            <CredentialsForm
-                handleCredentials={handleCredentials}
-                registerUser={true}
-                submitButtonText="Register"
-            />
+            <CloseButtonContainer />
+            <div className="FormContainer">
+                <h4>Registration</h4>
+                <CredentialsForm
+                    handleCredentials={handleCredentials}
+                    registerUser={true}
+                    submitButtonText="Register"
+                />
+            </div>
+
+        </div>
+    );
+}
+
+function CloseButtonContainer() {
+    return (
+        <div className="CloseButtonContainer">
+            <Link className="CloseButtonLink" to="/">
+                <CloseOutlined />
+            </Link>
         </div>
     );
 }

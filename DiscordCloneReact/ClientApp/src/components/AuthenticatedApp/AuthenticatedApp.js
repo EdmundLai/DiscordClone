@@ -11,6 +11,7 @@ var requestController = require('../../api/requestController');
 function AuthenticatedApp(props) {
     const [currentServer, setCurrentServer] = useState(null);
     const [currentChannel, setCurrentChannel] = useState(null);
+    const [user, setUser] = useState(null);
 
 
     useEffect(() => {
@@ -33,10 +34,19 @@ function AuthenticatedApp(props) {
             }
         }
 
+        const getUser = async () => {
+            const currUser = await requestController.getUser(props.loggedInUserId);
+            if (isMounted) {
+                setUser(currUser);
+            }
+        }
+
+        getUser();
+
         setInitialServerAndChannel();
 
         return () => { isMounted = false; }
-    }, []);
+    }, [props.loggedInUserId]);
 
     async function setInitialChannelFromServerId(serverId) {
         const serverChannels = await requestController.getServerChannels(serverId);
@@ -60,7 +70,7 @@ function AuthenticatedApp(props) {
     }
 
     const channelContent = currentChannel != null ? <ChannelMessages channel={currentChannel} /> :
-        <HomepageContent loggedInUserId={props.loggedInUserId} />;
+        <HomepageContent user={user} />;
 
     return (
         <div className="AuthenticatedApp">
@@ -77,22 +87,7 @@ function AuthenticatedApp(props) {
 }
 
 function HomepageContent(props) {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        let isMounted = true;
-        const getUser = async () => {
-            const currUser = await requestController.getUser(props.loggedInUserId);
-            if (isMounted) {
-                setUser(currUser);
-            }
-        }
-
-        getUser();
-        return () => { isMounted = false; }
-    }, [props.loggedInUserId]);
-
-    const greetingMessage = user == null ? "Welcome to DiscordClone!" : `Welcome to DiscordClone, ${user.userName}`;
+    const greetingMessage = props.user == null ? "Welcome to DiscordClone!" : `Welcome to DiscordClone, ${props.user.userName}`;
 
     return (
         <div className="HomepageContent">

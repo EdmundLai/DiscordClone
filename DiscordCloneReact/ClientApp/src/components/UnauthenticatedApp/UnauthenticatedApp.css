@@ -9,7 +9,7 @@
 
 .AuthenticationContainer {
     background-color: #36393f;
-    padding: 30px;
+    padding: 10px 10px 30px 30px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -28,4 +28,24 @@
 
 .AuthenticationMenuOption {
     flex: 1;
+}
+
+.CloseButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+.CloseButtonLink {
+    display: flex;
+    color: inherit;
+    
+}
+
+.CloseButtonLink:hover {
+    color: inherit;
+}
+
+.FormContainer {
+    padding-right: 20px;
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useFormik } from "formik";
 
-import { Link } from 'react-router-dom';
-
 import * as Yup from 'yup';
 
 var requestController = require("../../api/requestController");
@@ -84,12 +82,8 @@ function CredentialsForm(props) {
                 <div>{formik.errors.password}</div>
             </div>
 
-            <div>
-                <Link to="/">
-                    <button>Back</button>
-                </Link>
-                <button type="submit" disabled={!formik.isValid}>{props.submitButtonText}</button>
-            </div>
+            <button type="submit" disabled={!formik.isValid}>{props.submitButtonText}</button>
+
         </form>
     );
 }

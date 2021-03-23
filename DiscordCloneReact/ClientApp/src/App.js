@@ -32,6 +32,5 @@ export default function App() {
                 {appContent}
             </div>
         </BrowserRouter>
-
     );
 }
