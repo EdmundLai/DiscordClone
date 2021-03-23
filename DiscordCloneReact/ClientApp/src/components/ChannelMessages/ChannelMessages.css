@@ -5,6 +5,13 @@
     padding: 10px 10px;
 }
 
+.ChannelMessagesContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: white;
+}
+
 .ChannelHeading {
     user-select: none;
 }

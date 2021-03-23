@@ -43,7 +43,7 @@ function ChannelMessages(props) {
     </div> : <Chat channel={props.channel} />
 
     return (
-        <div>
+        <div className="ChannelMessagesContainer">
             <div>Toggle Chat state:
                 <button onClick={toggleChatOn}>{chatToggleText}</button>
             </div>

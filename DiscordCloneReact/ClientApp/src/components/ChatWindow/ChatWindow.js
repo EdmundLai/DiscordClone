@@ -2,7 +2,10 @@ import React from "react";
 
 import Message from "../Message/Message";
 
+import "./ChatWindow.css";
+
 var uniqid = require("uniqid");
+
 
 function ChatWindow(props) {
     const chat = props.chat;
@@ -11,7 +14,11 @@ function ChatWindow(props) {
         <Message key={uniqid()} user={m.user} message={m.message} />
     ));
 
-    return <div>{messages}</div>;
+    return (
+        <div className="ChatWindow">
+            {messages}
+        </div>
+    );
 }
 
 export default ChatWindow;

@@ -5,6 +5,8 @@ import { HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import ChatWindow from '../ChatWindow/ChatWindow';
 import ChatInput from '../ChatInput/ChatInput';
 
+import "./Chat.css";
+
 function Chat(props) {
     const [connection, setConnection] = useState(null);
     const [chat, setChat] = useState([]);
@@ -129,11 +131,13 @@ function Chat(props) {
 
         return () => {
             console.log("channel is changing!");
+
+            // release message handler when unmounting
             if (connection) {
                 connection.off("ReceiveMessage", handleMessage);
             }
             setChat([]);
-            console.log("is chat getting set to empty here?")
+            //console.log("is chat getting set to empty here?")
             isMounted = false;
         }
 
@@ -161,11 +165,10 @@ function Chat(props) {
     }
 
     return (
-        <div>
-            <h1>{props.channel.channelName}</h1>
-            <ChatInput sendMessage={sendMessage} />
-            <hr />
+        <div className="Chat">
+            <h1 className="ChatHeader"># {props.channel.channelName}</h1>
             <ChatWindow chat={chat} />
+            <ChatInput sendMessage={sendMessage} />
         </div>
 
     );
