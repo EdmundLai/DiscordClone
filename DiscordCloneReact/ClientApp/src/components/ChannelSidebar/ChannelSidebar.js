@@ -34,8 +34,8 @@ function ChannelSidebar(props) {
 
 // need to implement user settings
 function UserInfo(props) {
-    console.log("Hello from UserInfo");
-    console.log(props.user);
+    //console.log("Hello from UserInfo");
+    //console.log(props.user);
 
     return (
         <div className="UserInfo">

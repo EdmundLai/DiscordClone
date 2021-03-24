@@ -8,7 +8,7 @@ import './UnauthenticatedApp.css';
 var requestController = require("../../api/requestController");
 
 function UnauthenticatedApp(props) {
-    const setLoggedInUserId = props.setLoggedInUserId;
+    const login = props.login;
 
     return (
         <div className="UnauthenticatedApp">
@@ -19,14 +19,14 @@ function UnauthenticatedApp(props) {
                 <Route
                     path="/Login" render={(props) =>
                         <LoginPage {...props}
-                            setLoggedInUserId={setLoggedInUserId} />
+                            login={login} />
                     }
                 />
                 <Route
                     path="/Register"
                     render={(props) =>
                         <RegistrationPage {...props}
-                            setLoggedInUserId={setLoggedInUserId}
+                            login={login}
                         />
                     }
                 />
@@ -89,7 +89,7 @@ function LoginPage(props) {
         if (userVerified) {
             const currUser = await requestController.getUserByUserName(userName);
             console.log(currUser);
-            props.setLoggedInUserId(currUser.userId);
+            props.login(currUser.userId);
             history.push("/");
         }
 
@@ -123,7 +123,7 @@ function RegistrationPage(props) {
 
         const user = await requestController.getUserByUserName(userName);
         console.log(user);
-        props.setLoggedInUserId(user.userId);
+        props.login(user.userId);
         history.push("/");
     }
 

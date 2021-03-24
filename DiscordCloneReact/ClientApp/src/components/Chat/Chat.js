@@ -26,22 +26,26 @@ function Chat(props) {
     }, []);
 
     // returns true if channelConnections contains connectionId
+    // uses username as key for connection dictionary
     const configureChannelConnections = useCallback(async () => {
         const newChannelConnections = { ...channelConnections.current };
 
-        const channelId = String(props.channel.channelId);
+        const username = props.user.userName;
+        console.log(username);
+
+        //const channelId = String(props.channel.channelId);
 
         const connectionId = await connection.invoke("GetConnectionId");
 
         console.log(`connectionId: ${connectionId}`);
-        if (!(channelId in newChannelConnections)) {
-            newChannelConnections[channelId] = new Set();
+        if (!(username in newChannelConnections)) {
+            newChannelConnections[username] = new Set();
         }
 
         let hasConnectionId = true;
 
-        if (!newChannelConnections[channelId].has(connectionId)) {
-            newChannelConnections[channelId].add(connectionId);
+        if (!newChannelConnections[username].has(connectionId)) {
+            newChannelConnections[username].add(connectionId);
             hasConnectionId = false;
         }
 
@@ -51,7 +55,7 @@ function Chat(props) {
 
         return hasConnectionId;
 
-    }, [props.channel.channelId, connection])
+    }, [props.user.userName, connection])
 
     useEffect(() => {
         if (String(props.channel.channelId) in latestChats.current) {
@@ -168,7 +172,7 @@ function Chat(props) {
         <div className="Chat">
             <h1 className="ChatHeader"># {props.channel.channelName}</h1>
             <ChatWindow chat={chat} />
-            <ChatInput sendMessage={sendMessage} />
+            <ChatInput userName={props.user.userName} sendMessage={sendMessage} />
         </div>
 
     );

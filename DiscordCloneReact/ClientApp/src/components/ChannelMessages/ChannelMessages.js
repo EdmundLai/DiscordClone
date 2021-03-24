@@ -38,7 +38,7 @@ function ChannelMessages(props) {
                 </div>
             );
         })}
-    </div> : <Chat channel={props.channel} />
+    </div> : <Chat channel={props.channel} user={props.user} />
 
     return (
         <div className="ChannelMessagesContainer">
