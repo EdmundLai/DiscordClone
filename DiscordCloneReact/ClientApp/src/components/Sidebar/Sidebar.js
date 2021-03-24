@@ -8,12 +8,6 @@ import "./Sidebar.css";
 function Sidebar(props) {
     const [serverListNeedsUpdate, setServerListNeedsUpdate] = useState(false);
 
-    const channelSidebar =
-        props.currentServer != null ? <ChannelSidebar
-            setServerListNeedsUpdate={setServerListNeedsUpdate}
-            {...props}
-        /> : <></>;
-
     return (
         <div className="Sidebar">
             <ServerSidebar
@@ -23,7 +17,10 @@ function Sidebar(props) {
                 setServerListNeedsUpdate={setServerListNeedsUpdate}
                 logout={props.logout}
             />
-            {channelSidebar}
+            <ChannelSidebar
+                setServerListNeedsUpdate={setServerListNeedsUpdate}
+                {...props}
+            />
         </div>
     );
 }

@@ -4,3 +4,11 @@
     background-color: #36393f;
     height: 100%;
 }
+
+.HomepageContent {
+    display: flex;
+    color: white;
+    flex-grow: 1;
+    justify-content: center;
+    margin-top: 20px;
+}

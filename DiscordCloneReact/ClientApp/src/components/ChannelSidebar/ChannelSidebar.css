@@ -1,8 +1,9 @@
 ﻿.ChannelSidebar {
-    background: #2f3136;
     color: #8e9287;
-    padding: 10px 10px;
     user-select: none;
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
 }
 
 .ServerSettingsHeader {
@@ -11,5 +12,39 @@
 }
 
 .ServerSettingsButton {
+    cursor: pointer;
+}
+
+.UserInfo {
+    background: #23272A;
+    display: flex;
+    padding: 10px;
+}
+
+.DiscordLogo {
+    width: 3vmin;
+    height: 3vmin;
+}
+
+.DiscordLogoContainer {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ChannelMainSection {
+    background: #2f3136;
+    padding: 10px 10px;
+    flex: 1;
+}
+
+.UserInfoUsername {
+    flex: 1;
+}
+
+.UserInfoSettings {
     cursor: pointer;
 }
