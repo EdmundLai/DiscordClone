@@ -1,0 +1,7 @@
+﻿.ChatInput {
+    display: flex;
+}
+
+.ChatInputSubmit {
+    display: none;
+}

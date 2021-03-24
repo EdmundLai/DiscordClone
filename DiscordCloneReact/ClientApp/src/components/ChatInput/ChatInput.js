@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./ChatInput.css";
+
 function ChatInput(props) {
 
     const [message, setMessage] = useState("");
@@ -14,7 +16,7 @@ function ChatInput(props) {
         } else {
             alert("Please insert a message.");
         }
-
+        props.setChatWindowNeedsScroll(true);
         setMessage("");
     }
 
@@ -23,22 +25,17 @@ function ChatInput(props) {
     }
 
     return (
-        <div>
-            <p>Username: {props.userName}</p>
-            <form onSubmit={onSubmit}>
-                <label htmlFor="message">Message:</label>
-                <br />
-                <input
-                    type="text"
-                    id="message"
-                    name="message"
-                    value={message}
-                    onChange={onMessageUpdate}
-                />
-                <br />
-                <button>Submit</button>
-            </form>
-        </div>
+        <form className="ChatInput" onSubmit={onSubmit}>
+            <input
+                type="text"
+                id="message"
+                name="message"
+                value={message}
+                onChange={onMessageUpdate}
+            />
+            <br />
+            <button className="ChatInputSubmit">Submit</button>
+        </form>
     );
 }
 

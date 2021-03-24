@@ -13,6 +13,8 @@ function Chat(props) {
     const channelConnections = useRef({});
     const [chatNeedsUpdate, setChatNeedsUpdate] = useState(false);
 
+    const [chatWindowNeedsScroll, setChatWindowNeedsScroll] = useState(false);
+
     const latestChats = useRef({});
 
     useEffect(() => {
@@ -171,8 +173,16 @@ function Chat(props) {
     return (
         <div className="Chat">
             <h1 className="ChatHeader"># {props.channel.channelName}</h1>
-            <ChatWindow chat={chat} />
-            <ChatInput userName={props.user.userName} sendMessage={sendMessage} />
+            <ChatWindow
+                chat={chat}
+                chatWindowNeedsScroll={chatWindowNeedsScroll}
+                setChatWindowNeedsScroll={setChatWindowNeedsScroll}
+            />
+            <ChatInput
+                userName={props.user.userName}
+                sendMessage={sendMessage}
+                setChatWindowNeedsScroll={setChatWindowNeedsScroll}
+            />
         </div>
 
     );
