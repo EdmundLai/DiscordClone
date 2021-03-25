@@ -22,7 +22,7 @@ function ChatWindow(props) {
     }, [props.chatNeedsUpdate]);
 
     const messages = props.chat.map((m) => (
-        <Message key={uniqid()} user={m.user} message={m.message} />
+        <Message key={uniqid()} userName={m.userName} messageContent={m.messageContent} />
     ));
 
     return (

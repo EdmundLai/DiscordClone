@@ -7,6 +7,8 @@ import ChatInput from '../ChatInput/ChatInput';
 
 import "./Chat.css";
 
+var requestController = require("../../api/requestController");
+
 function Chat(props) {
     const [connection, setConnection] = useState(null);
     const [chat, setChat] = useState([]);
@@ -24,6 +26,16 @@ function Chat(props) {
         setConnection(newConnection);
         console.log("setConnection called!");
     }, []);
+
+    const getChannelMessagesFromDatabase = useCallback(async () => {
+        const messageData = await requestController.getChannelMessages(
+            props.channel.channelId
+        );
+        //console.log("getChannelMessagesFromDatabase");
+
+        latestChats.current[String(props.channel.channelId)] = messageData;
+        setChatNeedsUpdate(true);
+    }, [props.channel.channelId]);
 
     // returns true if channelConnections contains connectionId
     // uses username as key for connection dictionary
@@ -59,6 +71,7 @@ function Chat(props) {
 
     useEffect(() => {
         if (String(props.channel.channelId) in latestChats.current) {
+            console.log("channelId found in latestChats.current");
             //console.log(latestChats.current[String(props.channel.channelId)]);
             setChat(latestChats.current[String(props.channel.channelId)]);
         }
@@ -69,31 +82,6 @@ function Chat(props) {
     useEffect(() => {
         console.log("second use effect called");
         let isMounted = true;
-        
-        
-        // if connection is not null
-        if (connection) {
-            //console.log(connection.state);
-            //console.log(HubConnectionState);
-            if (connection.state === HubConnectionState.Disconnected) {
-                console.log("hub is disconnected");
-                connection.start()
-                    .then(result => {
-                        if (isMounted) {
-                            initClientConnection(connection);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(`Connection failed: ${error}`);
-                    });
-            } else if (connection.state === HubConnectionState.Connected) {
-                console.log("hub is connected");
-                if (isMounted) {
-                    
-                    initClientConnection(connection);
-                }
-            }
-        }
 
         let handleMessage = message => {
             const currChannelId = String(props.channel.channelId);
@@ -133,6 +121,31 @@ function Chat(props) {
             connection.on("ReceiveMessage", handleMessage);
         }
 
+        // if connection is not null
+        if (connection) {
+            //console.log(connection.state);
+            //console.log(HubConnectionState);
+            if (connection.state === HubConnectionState.Disconnected) {
+                console.log("hub is disconnected");
+                connection.start()
+                    .then(result => {
+                        if (isMounted) {
+                            getChannelMessagesFromDatabase();
+                            initClientConnection(connection);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(`Connection failed: ${error}`);
+                    });
+            } else if (connection.state === HubConnectionState.Connected) {
+                console.log("hub is connected");
+                if (isMounted) {
+                    getChannelMessagesFromDatabase();
+                    initClientConnection(connection);
+                }
+            }
+        }
+
         return () => {
             console.log("channel is changing!");
 
@@ -146,19 +159,25 @@ function Chat(props) {
         }
 
 
-    }, [connection, configureChannelConnections, props.channel.channelId]);
+    }, [connection, configureChannelConnections, getChannelMessagesFromDatabase, props.channel.channelId]);
 
-    async function sendMessage(user, message) {
+    async function sendMessage(username, message) {
         const channelId = String(props.channel.channelId);
 
         const chatMessage = {
-            user: user,
-            message: message,
+            userName: username,
+            messageContent: message,
             channelId: channelId
         };
 
         if (connection.connectionStarted) {
             try {
+                // save message to database here
+                const userId = props.user.userId;
+
+                await requestController.sendMessage(userId, channelId, message);
+
+                // send message to signalR group
                 await connection.send("SendMessageToGroup", channelId, chatMessage);
             } catch (e) {
                 console.log(e);
@@ -170,17 +189,16 @@ function Chat(props) {
 
     return (
         <div className="Chat">
-            <h1 className="ChatHeader"># {props.channel.channelName}</h1>
+            <h2 className="ChatHeader"># {props.channel.channelName}</h2>
             <ChatWindow
                 chat={chat}
                 chatNeedsUpdate={chatNeedsUpdate}
             />
             <ChatInput
-                userName={props.user.userName}
+                user={props.user}
                 sendMessage={sendMessage}
             />
         </div>
-
     );
 }
 

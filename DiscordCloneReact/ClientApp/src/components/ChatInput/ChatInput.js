@@ -12,7 +12,7 @@ function ChatInput(props) {
         const isMessageProvided = message && message !== "";
 
         if (isMessageProvided) {
-            props.sendMessage(props.userName, message);
+            props.sendMessage(props.user.userName, message);
         } else {
             alert("Please insert a message.");
         }
