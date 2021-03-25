@@ -18,9 +18,8 @@ function ChatWindow(props) {
         //console.log("use effect in ChatWindow getting called!");
 
         scrollToBottom();
-
-        props.setChatWindowNeedsScroll(false);
-    }, [props]);
+        
+    }, [props.chatNeedsUpdate]);
 
     const messages = props.chat.map((m) => (
         <Message key={uniqid()} user={m.user} message={m.message} />

@@ -16,7 +16,6 @@ function ChatInput(props) {
         } else {
             alert("Please insert a message.");
         }
-        props.setChatWindowNeedsScroll(true);
         setMessage("");
     }
 
