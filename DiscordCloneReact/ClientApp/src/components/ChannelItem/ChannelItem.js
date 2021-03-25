@@ -46,7 +46,9 @@ function ChannelItem(props) {
         props.channel.channelId === props.currentChannel.channelId ? "CurrentChannel ChannelText" : "ChannelText";
 
     function changeChannel() {
-        props.setCurrentChannel(props.channel);
+        const newChannel = { ...props.channel };
+
+        props.setCurrentChannel(newChannel);
     }
 
     async function deleteChannelAndClose() {

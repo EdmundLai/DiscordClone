@@ -30,7 +30,7 @@ export default function App() {
 
     function login(userId) {
         setLoggedInUserId(userId);
-        Cookies.set('userId', userId);
+        Cookies.set('userId', userId, { sameSite: 'None', secure: true });
     }
 
     function logout() {

@@ -35,7 +35,7 @@ function Chat(props) {
 
         latestChats.current[String(props.channel.channelId)] = messageData;
         setChatNeedsUpdate(true);
-    }, [props.channel.channelId]);
+    }, [props.channel]);
 
     // returns true if channelConnections contains connectionId
     // uses username as key for connection dictionary
@@ -69,45 +69,76 @@ function Chat(props) {
 
     }, [props.user.userName, connection])
 
+    let handleMessage = useCallback(message => {
+        //const currChannelId = String(props.channel.channelId);
+
+        const newChats = { ...latestChats.current };
+
+        if (!(String(props.channel.channelId) in newChats)) {
+            newChats[String(props.channel.channelId)] = [];
+        }
+        //console.log(`channelId: ${String(props.channel.channelId)}`);
+        console.log(`message channelId: ${message.channelId}`);
+        console.log(message);
+
+
+        newChats[String(message.channelId)].push(message);
+
+        latestChats.current = newChats;
+
+        const updatedChat = newChats[String(message.channelId)];
+
+        console.log(updatedChat);
+
+        setChat(updatedChat);
+        setChatNeedsUpdate(true);
+
+        //if (String(props.channel.channelId) === message.channelId) {
+        //    console.log("channel id and message channel id are the same!");
+        //    newChats[String(props.channel.channelId)].push(message);
+
+        //    latestChats.current = newChats;
+
+        //    const updatedChat = newChats[String(props.channel.channelId)];
+
+        //    console.log(updatedChat);
+
+        //    setChat(updatedChat);
+        //    setChatNeedsUpdate(true);
+        //} else {
+        //    console.log("channel id and message channel id are not the same!");
+        //}
+    }, [props.channel]);
+
     useEffect(() => {
-        if (String(props.channel.channelId) in latestChats.current) {
-            console.log("channelId found in latestChats.current");
-            //console.log(latestChats.current[String(props.channel.channelId)]);
-            setChat(latestChats.current[String(props.channel.channelId)]);
+        console.log(chatNeedsUpdate);
+        console.log(props.channel);
+
+        const getData = async () => {
+            const messageData = await requestController.getChannelMessages(
+                props.channel.channelId
+            );
+            //console.log("getChannelMessagesFromDatabase");
+
+            latestChats.current[String(props.channel.channelId)] = messageData;
         }
 
-        setChatNeedsUpdate(false);
-    }, [chatNeedsUpdate, setChatNeedsUpdate, props.channel.channelId])
+        getData().then(() => {
+            if (String(props.channel.channelId) in latestChats.current) {
+                console.log(`channelId found in latestChats.current: ${Date.now()}`);
+                console.log(latestChats.current[String(props.channel.channelId)]);
+
+                setChat(latestChats.current[String(props.channel.channelId)]);
+            }
+            setChatNeedsUpdate(false);
+        })
+    }, [chatNeedsUpdate, props.channel]);
 
     useEffect(() => {
         console.log("second use effect called");
         let isMounted = true;
 
-        let handleMessage = message => {
-            const currChannelId = String(props.channel.channelId);
 
-            const newChats = { ...latestChats.current };
-
-            if (!(currChannelId in newChats)) {
-                newChats[currChannelId] = [];
-            }
-            console.log(`channelId: ${currChannelId}`);
-            console.log(`message channelId: ${message.channelId}`);
-            console.log(message);
-            if (currChannelId === message.channelId) {
-                console.log("channel id and message channel id are the same!");
-                newChats[currChannelId].push(message);
-
-                latestChats.current = newChats;
-
-                const updatedChat = newChats[currChannelId];
-
-                console.log(updatedChat);
-
-                setChat(updatedChat);
-                setChatNeedsUpdate(true);
-            }
-        }
 
         async function initClientConnection(connection) {
             console.log("Connected!");
@@ -159,10 +190,16 @@ function Chat(props) {
         }
 
 
-    }, [connection, configureChannelConnections, getChannelMessagesFromDatabase, props.channel.channelId]);
+    }, [connection,
+        configureChannelConnections,
+        getChannelMessagesFromDatabase,
+        handleMessage,
+        props.channel]);
 
     async function sendMessage(username, message) {
         const channelId = String(props.channel.channelId);
+
+        console.log(channelId);
 
         const chatMessage = {
             userName: username,
@@ -179,6 +216,8 @@ function Chat(props) {
 
                 // send message to signalR group
                 await connection.send("SendMessageToGroup", channelId, chatMessage);
+
+                setChatNeedsUpdate(true);
             } catch (e) {
                 console.log(e);
             }

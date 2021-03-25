@@ -54,7 +54,8 @@ namespace DiscordCloneReact.Controllers
         [HttpPost("create")]
         public async Task<Message> Create([FromBody] JSMessage messageObj)
         {
-            _logger.LogInformation(messageObj.MessageContent);
+            // for debugging purposes
+            //_logger.LogInformation(messageObj.MessageContent);
 
             var offset = DateTimeOffset.FromUnixTimeMilliseconds(messageObj.CreationTime);
 
