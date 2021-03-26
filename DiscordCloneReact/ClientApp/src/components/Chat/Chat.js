@@ -43,7 +43,7 @@ function Chat(props) {
         const newChannelConnections = { ...channelConnections.current };
 
         const username = props.user.userName;
-        console.log(username);
+        //console.log(username);
 
         //const channelId = String(props.channel.channelId);
 
@@ -70,6 +70,8 @@ function Chat(props) {
     }, [props.user.userName, connection])
 
     let handleMessage = useCallback(message => {
+        // props.channel.channelId gets snapshotted when assigned,
+        // or something else, but it is not the updated value
         //const currChannelId = String(props.channel.channelId);
 
         const newChats = { ...latestChats.current };
@@ -78,8 +80,8 @@ function Chat(props) {
             newChats[String(props.channel.channelId)] = [];
         }
         //console.log(`channelId: ${String(props.channel.channelId)}`);
-        console.log(`message channelId: ${message.channelId}`);
-        console.log(message);
+        //console.log(`message channelId: ${message.channelId}`);
+        //console.log(message);
 
 
         newChats[String(message.channelId)].push(message);
@@ -88,31 +90,14 @@ function Chat(props) {
 
         const updatedChat = newChats[String(message.channelId)];
 
-        console.log(updatedChat);
 
         setChat(updatedChat);
         setChatNeedsUpdate(true);
-
-        //if (String(props.channel.channelId) === message.channelId) {
-        //    console.log("channel id and message channel id are the same!");
-        //    newChats[String(props.channel.channelId)].push(message);
-
-        //    latestChats.current = newChats;
-
-        //    const updatedChat = newChats[String(props.channel.channelId)];
-
-        //    console.log(updatedChat);
-
-        //    setChat(updatedChat);
-        //    setChatNeedsUpdate(true);
-        //} else {
-        //    console.log("channel id and message channel id are not the same!");
-        //}
     }, [props.channel]);
 
     useEffect(() => {
-        console.log(chatNeedsUpdate);
-        console.log(props.channel);
+        //console.log(chatNeedsUpdate);
+        //console.log(props.channel);
 
         const getData = async () => {
             const messageData = await requestController.getChannelMessages(
@@ -125,20 +110,19 @@ function Chat(props) {
 
         getData().then(() => {
             if (String(props.channel.channelId) in latestChats.current) {
-                console.log(`channelId found in latestChats.current: ${Date.now()}`);
-                console.log(latestChats.current[String(props.channel.channelId)]);
+                //console.log(`channelId found in latestChats.current`);
+                //console.log(latestChats.current[String(props.channel.channelId)]);
 
                 setChat(latestChats.current[String(props.channel.channelId)]);
             }
             setChatNeedsUpdate(false);
-        })
+        });
+        
     }, [chatNeedsUpdate, props.channel]);
 
     useEffect(() => {
-        console.log("second use effect called");
+        //console.log("second use effect called");
         let isMounted = true;
-
-
 
         async function initClientConnection(connection) {
             console.log("Connected!");
@@ -199,7 +183,7 @@ function Chat(props) {
     async function sendMessage(username, message) {
         const channelId = String(props.channel.channelId);
 
-        console.log(channelId);
+        //console.log(channelId);
 
         const chatMessage = {
             userName: username,

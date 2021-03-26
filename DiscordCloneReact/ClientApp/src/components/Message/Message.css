@@ -1,3 +1,19 @@
 ﻿.Message {
     padding: 0 10px;
 }
+
+.Message:not(:nth-last-child(2)):after {
+    margin: 10px 0;
+    content: "";
+    background-color: #42454a;
+    width: 100%;
+    height: 1px;
+    top: 10px;
+    left: 50%;
+    display: block;
+}
+
+.MessageDate {
+    font-size: 0.8rem;
+    color: #72767d;
+}
