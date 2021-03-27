@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 
 import { Input, Button } from 'antd';
 
+import "./CredentialsForm.css";
+
 var requestController = require("../../api/requestController");
 
 
@@ -61,8 +63,8 @@ function CredentialsForm(props) {
 
     return (
         <form className="CredentialsForm" onSubmit={formik.handleSubmit}>
-            <div>
-                <label>Username: </label>
+            <div className="CredentialsFormItem">
+                <label className="CredentialsFormLabel">Username: </label>
                 <Input
                     id="userName"
                     name="userName"
@@ -70,10 +72,12 @@ function CredentialsForm(props) {
                     onChange={formik.handleChange}
                     value={formik.values.userName}
                 />
-                <div>{formik.errors.userName}</div>
+                
             </div>
-            <div>
-                <label>Password: </label>
+            <div className="CredentialsFormErrors">{formik.errors.userName}</div>
+            <div className="CredentialsFormItem">
+
+                <label className="CredentialsFormLabel">Password: </label>
                 <Input
                     id="password"
                     name="password"
@@ -81,11 +85,13 @@ function CredentialsForm(props) {
                     onChange={formik.handleChange}
                     value={formik.values.password}
                 />
-                <div>{formik.errors.password}</div>
+                
             </div>
+            <div className="CredentialsFormErrors">{formik.errors.password}</div>
 
-            <Button htmlType="submit" disabled={!formik.isValid}>{props.submitButtonText}</Button>
-
+            <div className="SubmitContainer">
+                <Button htmlType="submit" disabled={!formik.isValid}>{props.submitButtonText}</Button>
+            </div>
         </form>
     );
 }
