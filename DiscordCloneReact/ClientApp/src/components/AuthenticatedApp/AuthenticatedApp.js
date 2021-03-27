@@ -53,28 +53,34 @@ function AuthenticatedApp(props) {
         if (typeof serverChannels !== 'undefined' && serverChannels.length > 0) {
             const initialChannel = serverChannels[0];
             setCurrentChannel(initialChannel);
-            console.log(currentChannel);
+            //console.log(currentChannel);
+        } else {
+            setCurrentChannel(null);
         }
     }
 
     // if serverId is not passed in, reset currentServer and currentChannel
-    async function setCurrentServerAndChannel(serverId) {
+    async function setCurrentServerAndChannel(serverId, channelId) {
         if (typeof serverId == 'undefined') {
             setCurrentServer(null);
             setCurrentChannel(null);
-        } else {
+        } else if (typeof channelId == "undefined") {
             const server = await requestController.getServerByServerId(serverId);
             setCurrentServer(server);
             await setInitialChannelFromServerId(serverId);
+        } else {
+            const server = await requestController.getServerByServerId(serverId);
+            setCurrentServer(server);
+            const channel = await requestController.getChannelByChannelId(channelId);
+            setCurrentChannel(channel);
         }
     }
 
-    const channelContent = currentChannel != null ?
+    const channelContent = currentChannel !== null ?
         <ChannelMessages
             channel={currentChannel}
             user={user}
-        /> :
-        <HomepageContent user={user} />;
+        /> : (currentServer !== null ? <></> : <HomepageContent user={user}/>);
 
     return (
         <div className="AuthenticatedApp">
@@ -96,7 +102,7 @@ function HomepageContent(props) {
 
     return (
         <div className="HomepageContent">
-            <h1>{greetingMessage}</h1>
+            <h1 className="HomepageHeader">{greetingMessage}</h1>
         </div>
     );
 }

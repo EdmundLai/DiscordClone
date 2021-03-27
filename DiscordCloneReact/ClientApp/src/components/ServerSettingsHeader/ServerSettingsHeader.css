@@ -1,4 +1,17 @@
-﻿.ServerSettingsModal {
+﻿.ServerSettingsHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ServerSettingsHeaderName {
+    color: white;
+}
+
+.ServerSettingsButton {
+    cursor: pointer;
+}
+
+.ServerSettingsModal {
     user-select: none;
     height: 100%;
     display: flex;

@@ -19,15 +19,13 @@
 }
 
 .AuthenticationContainerHeading {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: white;
 }
 
 .AuthenticationMenu {
     display: flex;
-}
-
-.AuthenticationMenuOption {
-    flex: 1;
+    justify-content: space-around;
 }
 
 .CloseButtonContainer {
@@ -48,4 +46,8 @@
 
 .FormContainer {
     padding-right: 20px;
+}
+
+.FormContainerHeader {
+    color: white;
 }

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-
-import { useFormik } from "formik";
 import Modal from "react-modal";
-import { SettingOutlined, CloseOutlined } from "@ant-design/icons";
+import ModalTopBar from "../ModalTopBar/ModalTopBar";
+import { SettingOutlined } from "@ant-design/icons";
+
+import EditServerNameContainer from "../EditServerNameContainer/EditServerNameContainer";
 
 import "./ServerSettingsHeader.css";
-
-var requestController = require("../../api/requestController");
 
 function ServerSettingsHeader(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,8 +24,6 @@ function ServerSettingsHeader(props) {
             left: "20%",
             right: "20%",
             bottom: "20%",
-
-
             background: "#36393f",
             border: "none",
             color: "#ffffff"
@@ -50,7 +47,7 @@ function ServerSettingsHeader(props) {
 
     return (
         <div className="ServerSettingsHeader">
-            <h3>{props.currentServer.serverName}</h3>
+            <h3 className="ServerSettingsHeaderName">{props.currentServer.serverName}</h3>
             <div className="ServerSettingsButton">
                 <SettingOutlined onClick={openServerSettingsModal} />
             </div>
@@ -87,9 +84,7 @@ function ServerSettingsModal(props) {
 
     return (
         <div className="ServerSettingsModal">
-            <div className="ServerSettingsModalHeader">
-                <CloseOutlined onClick={props.closeModal} />
-            </div>
+            <ModalTopBar title="Server Settings" onClick={props.closeModal} />
             <div className="ServerSettingsModalContainer">
                 <div className="ServerSettingsModalMenu">
                     <div>
@@ -108,38 +103,38 @@ function ServerSettingsModal(props) {
 
 }
 
-function EditServerNameContainer(props) {
+//function EditServerNameContainer(props) {
 
-    const formik = useFormik({
-        initialValues: { serverName: props.currentServer.serverName },
-        onSubmit: async (values, { resetForm }) => {
-            //console.log(values.serverName);
-            await requestController.editServerName(props.currentServer.serverId, values.serverName);
-            props.setCurrentServerAndChannel(props.currentServer.serverId);
-            props.setServerListNeedsUpdate(true);
-            resetForm();
-            props.closeModal();
-        },
-    });
+//    const formik = useFormik({
+//        initialValues: { serverName: props.currentServer.serverName },
+//        onSubmit: async (values, { resetForm }) => {
+//            //console.log(values.serverName);
+//            await requestController.editServerName(props.currentServer.serverId, values.serverName);
+//            props.setCurrentServerAndChannel(props.currentServer.serverId);
+//            props.setServerListNeedsUpdate(true);
+//            resetForm();
+//            props.closeModal();
+//        },
+//    });
 
-    return (
-        <div className="EditServerNameContainer">
-            <form onSubmit={formik.handleSubmit}>
-                <div>
-                    <label htmlFor="serverName">Server Name: </label>
-                    <input
-                        id="serverName"
-                        name="serverName"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.serverName}
-                        required
-                    />
-                </div>
-                <button type="submit">Save Changes</button>
-            </form>
-        </div>
-    );
-}
+//    return (
+//        <div className="EditServerNameContainer">
+//            <form onSubmit={formik.handleSubmit}>
+//                <div>
+//                    <label htmlFor="serverName">Server Name: </label>
+//                    <input
+//                        id="serverName"
+//                        name="serverName"
+//                        type="text"
+//                        onChange={formik.handleChange}
+//                        value={formik.values.serverName}
+//                        required
+//                    />
+//                </div>
+//                <button type="submit">Save Changes</button>
+//            </form>
+//        </div>
+//    );
+//}
 
 export default ServerSettingsHeader;

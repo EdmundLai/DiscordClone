@@ -40,12 +40,13 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpPost("create")]
-        public async Task AddNewChannel(string channelName, int serverId)
+        public async Task<Channel> AddNewChannel(string channelName, int serverId)
         {
             Channel newChannel = new Channel { ChannelName = channelName, ServerId = serverId };
 
             discordCloneContext.Channels.Add(newChannel);
             await discordCloneContext.SaveChangesAsync();
+            return newChannel;
         }
 
         [HttpDelete("delete")]

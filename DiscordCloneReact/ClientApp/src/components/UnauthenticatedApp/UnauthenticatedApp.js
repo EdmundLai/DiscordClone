@@ -3,7 +3,10 @@ import { Switch, Link, Route, useHistory } from 'react-router-dom';
 import CredentialsForm from '../CredentialsForm/CredentialsForm';
 import { CloseOutlined } from '@ant-design/icons';
 
+import { Button } from 'antd';
+
 import './UnauthenticatedApp.css';
+
 
 var requestController = require("../../api/requestController");
 
@@ -13,9 +16,6 @@ function UnauthenticatedApp(props) {
     return (
         <div className="UnauthenticatedApp">
             <Switch>
-                <Route path="/NoLogin">
-                    <NoLoginPage />
-                </Route>
                 <Route
                     path="/Login" render={(props) =>
                         <LoginPage {...props}
@@ -43,35 +43,13 @@ function WelcomePage(props) {
         <div className="WelcomePage AuthenticationContainer">
             <h2 className="AuthenticationContainerHeading">Welcome to DiscordClone!</h2>
             <div className="AuthenticationMenu">
-                <div className="AuthenticationMenuOption">
-                    <h5>No account</h5>
-                    <Link to="/NoLogin">
-                        <button>Proceed</button>
-                    </Link>
-                </div>
-                <div className="AuthenticationMenuOption">
-                    <h5>Use an account</h5>
-                    <Link to="/Login">
-                        <button>Log in</button>
-                    </Link>
-                     or
-                    <Link to="/Register">
-                        <button>Register</button>
-                    </Link>
-                </div>
+                <Link to="/Login">
+                    <Button>Log in</Button>
+                </Link>
+                <Link to="/Register">
+                    <Button>Register</Button>
+                </Link>
             </div>
-        </div>
-    );
-}
-
-// not implemented yet
-function NoLoginPage() {
-    return (
-        <div className="NoLoginPage AuthenticationContainer">
-            Here is my page for continuing without an account!
-            <Link to="/">
-                <button>Back</button>
-            </Link>
         </div>
     );
 }
@@ -99,7 +77,7 @@ function LoginPage(props) {
         <div className="LoginPage AuthenticationContainer">
             <CloseButtonContainer />
             <div className="FormContainer">
-                <h4>Login</h4>
+                <h4 className="FormContainerHeader">Login</h4>
                 <CredentialsForm
                     handleCredentials={handleCredentials}
                     submitButtonText="Login"
@@ -131,7 +109,7 @@ function RegistrationPage(props) {
         <div className="RegistrationPage AuthenticationContainer">
             <CloseButtonContainer />
             <div className="FormContainer">
-                <h4>Registration</h4>
+                <h4 className="FormContainerHeader">Registration</h4>
                 <CredentialsForm
                     handleCredentials={handleCredentials}
                     registerUser={true}

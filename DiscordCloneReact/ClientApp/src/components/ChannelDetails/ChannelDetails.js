@@ -5,8 +5,6 @@ import Modal from 'react-modal';
 import ChannelModalContent from '../ChannelModalContent/ChannelModalContent';
 import ChannelItem from '../ChannelItem/ChannelItem';
 
-/*import { CloseOutlined } from "@ant-design/icons";*/
-
 import './ChannelDetails.css';
 
 var requestController = require('../../api/requestController');
@@ -84,6 +82,7 @@ function ChannelDetails(props) {
             >
                 <ChannelModalContent
                     currentServer={props.currentServer}
+                    setCurrentServerAndChannel={props.setCurrentServerAndChannel}
                     setChannelsNeedUpdate={setChannelsNeedUpdate}
                     closeModal={closeModal} />
             </Modal>

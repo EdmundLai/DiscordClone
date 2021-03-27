@@ -1,7 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
+import { Input, Button } from "antd";
 
-import { CloseOutlined } from "@ant-design/icons";
+import ModalTopBar from "../ModalTopBar/ModalTopBar";
 
 var requestController = require("../../api/requestController");
 
@@ -17,24 +18,22 @@ function ChannelModalContent(props) {
     });
 
     async function createChannel(channelName) {
-        await requestController.addChannelToServer(
+        const newChannel = await requestController.addChannelToServer(
             channelName,
             props.currentServer.serverId
         );
+
+        await props.setCurrentServerAndChannel(props.currentServer.serverId, newChannel.channelId);
     }
 
     return (
         <div className="ChannelModalContent">
-            <div className="TopBarModal">
-                <h3 className="ModalHeader">Create New Channel</h3>
-                <CloseOutlined onClick={props.closeModal} />
-            </div>
-
+            <ModalTopBar title="Create New Channel" onClick={props.closeModal} />
             <form onSubmit={formik.handleSubmit}>
                 <div className="ModalFormContent">
                     <label htmlFor="channelName">Channel Name: </label>
                     <br></br>
-                    <input
+                    <Input
                         id="channelName"
                         name="channelName"
                         type="text"
@@ -44,7 +43,7 @@ function ChannelModalContent(props) {
                     />
                 </div>
                 <div className="ModalSubmitContainer">
-                    <button type="submit">Create Channel</button>
+                    <Button htmlType="submit">Create Channel</Button>
                 </div>
             </form>
         </div>

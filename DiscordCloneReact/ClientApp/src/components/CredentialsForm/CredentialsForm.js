@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 
 import * as Yup from 'yup';
 
+import { Input, Button } from 'antd';
+
 var requestController = require("../../api/requestController");
 
 
@@ -61,7 +63,7 @@ function CredentialsForm(props) {
         <form className="CredentialsForm" onSubmit={formik.handleSubmit}>
             <div>
                 <label>Username: </label>
-                <input
+                <Input
                     id="userName"
                     name="userName"
                     type="text"
@@ -72,7 +74,7 @@ function CredentialsForm(props) {
             </div>
             <div>
                 <label>Password: </label>
-                <input
+                <Input
                     id="password"
                     name="password"
                     type="password"
@@ -82,7 +84,7 @@ function CredentialsForm(props) {
                 <div>{formik.errors.password}</div>
             </div>
 
-            <button type="submit" disabled={!formik.isValid}>{props.submitButtonText}</button>
+            <Button htmlType="submit" disabled={!formik.isValid}>{props.submitButtonText}</Button>
 
         </form>
     );

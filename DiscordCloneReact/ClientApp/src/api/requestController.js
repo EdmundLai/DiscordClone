@@ -71,7 +71,7 @@ async function getChannelMessages(channelId) {
 async function addChannelToServer(channelName, serverId) {
     try {
         const result = await axios.post(`${apiEndpoint}/api/Channels/create?channelName=${channelName}&serverId=${serverId}`);
-        return result;
+        return result.data;
     } catch (e) {
         console.log("Error from addChannelToServer");
         console.log(e);

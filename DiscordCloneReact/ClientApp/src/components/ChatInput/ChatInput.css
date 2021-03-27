@@ -5,3 +5,15 @@
 .ChatInputSubmit {
     display: none;
 }
+
+#ChatInputBar {
+    background-color: #40444b;
+    margin: 10px 10px;
+    border: none;
+    color: white;
+}
+
+    #ChatInputBar::placeholder {
+        color: #7b7f84
+    }
+

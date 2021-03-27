@@ -49,7 +49,7 @@ function Chat(props) {
 
         const connectionId = await connection.invoke("GetConnectionId");
 
-        console.log(`connectionId: ${connectionId}`);
+        //console.log(`connectionId: ${connectionId}`);
         if (!(username in newChannelConnections)) {
             newChannelConnections[username] = new Set();
         }
@@ -61,7 +61,7 @@ function Chat(props) {
             hasConnectionId = false;
         }
 
-        console.log(channelConnections.current);
+        //console.log(channelConnections.current);
 
         channelConnections.current = newChannelConnections;
 
@@ -209,18 +209,24 @@ function Chat(props) {
             alert("No connection to server yet.");
         }
     }
+    //console.log(props.channel);
+
+    const chatContent = props.channel !== null ? <>
+        <h2 className="ChatHeader"># {props.channel.channelName}</h2>
+        <ChatWindow
+            chat={chat}
+            chatNeedsUpdate={chatNeedsUpdate}
+        />
+        <ChatInput
+            channelName={props.channel.channelName}
+            user={props.user}
+            sendMessage={sendMessage}
+        />
+    </> : <></>;
 
     return (
         <div className="Chat">
-            <h2 className="ChatHeader"># {props.channel.channelName}</h2>
-            <ChatWindow
-                chat={chat}
-                chatNeedsUpdate={chatNeedsUpdate}
-            />
-            <ChatInput
-                user={props.user}
-                sendMessage={sendMessage}
-            />
+            {chatContent}
         </div>
     );
 }

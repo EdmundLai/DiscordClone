@@ -11,6 +11,8 @@ import Cookies from 'js-cookie';
 import './App.css';
 import './ModalStyling.css';
 
+import 'antd/dist/antd.css';
+
 
 export default function App() {
     const [loggedInUserId, setLoggedInUserId] = useState(null);

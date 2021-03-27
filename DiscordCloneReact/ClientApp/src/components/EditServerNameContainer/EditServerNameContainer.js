@@ -1,38 +1,30 @@
 import React from "react";
-import { useFormik } from "formik";
-import { Input, Button } from "antd";
 
-import ModalTopBar from "../ModalTopBar/ModalTopBar";
+import { useFormik } from "formik";
+
+import { Input, Button } from "antd";
 
 var requestController = require("../../api/requestController");
 
-function ServerModalContent(props) {
-    async function createNewServer(serverName) {
-        const server = await requestController.addNewServer(serverName);
-        await requestController.addChannelToServer("general", server.serverId);
-        return server.serverId;
-    }
+function EditServerNameContainer(props) {
 
     const formik = useFormik({
-        initialValues: { serverName: "" },
+        initialValues: { serverName: props.currentServer.serverName },
         onSubmit: async (values, { resetForm }) => {
             //console.log(values.serverName);
-            const serverId = await createNewServer(values.serverName);
-            //console.log(`created serverId: ${serverId}`);
+            await requestController.editServerName(props.currentServer.serverId, values.serverName);
+            props.setCurrentServerAndChannel(props.currentServer.serverId);
             props.setServerListNeedsUpdate(true);
-            props.setCurrentServerAndChannel(serverId);
             resetForm();
             props.closeModal();
         },
     });
 
     return (
-        <div className="ServerModalContent">
-            <ModalTopBar title="Create Server" onClick={props.closeModal} />
+        <div className="EditServerNameContainer">
             <form onSubmit={formik.handleSubmit}>
-                <div className="ModalFormContent">
+                <div>
                     <label htmlFor="serverName">Server Name: </label>
-                    <br></br>
                     <Input
                         id="serverName"
                         name="serverName"
@@ -43,11 +35,12 @@ function ServerModalContent(props) {
                     />
                 </div>
                 <div className="ModalSubmitContainer">
-                    <Button htmlType="submit">Create Server</Button>
+                    <Button htmlType="submit">Save Changes</Button>
                 </div>
             </form>
         </div>
     );
 }
 
-export default ServerModalContent;
+
+export default EditServerNameContainer;

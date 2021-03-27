@@ -1,5 +1,5 @@
 ﻿
-.TopBarModal {
+.ModalTopBar {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -8,6 +8,7 @@
 
 .ModalHeader {
     margin-right: 20px;
+    color: white;
 }
 
 .ModalSubmitContainer {

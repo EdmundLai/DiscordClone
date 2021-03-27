@@ -6,15 +6,6 @@
     min-width: 220px;
 }
 
-.ServerSettingsHeader {
-    display: flex;
-    justify-content: space-between;
-}
-
-.ServerSettingsButton {
-    cursor: pointer;
-}
-
 .UserInfo {
     background: #23272A;
     display: flex;

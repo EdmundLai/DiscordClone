@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Input } from "antd";
+
 import "./ChatInput.css";
 
 function ChatInput(props) {
@@ -25,12 +27,13 @@ function ChatInput(props) {
 
     return (
         <form className="ChatInput" onSubmit={onSubmit}>
-            <input
+            <Input
+                id="ChatInputBar"
                 type="text"
-                id="message"
                 name="message"
                 value={message}
                 onChange={onMessageUpdate}
+                placeholder={`Message #${props.channelName}`}
             />
             <br />
             <button className="ChatInputSubmit">Submit</button>

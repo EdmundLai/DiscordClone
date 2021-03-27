@@ -5,6 +5,10 @@ import {
     CloseOutlined
 } from '@ant-design/icons';
 
+import { Button } from "antd";
+
+import ModalTopBar from "../ModalTopBar/ModalTopBar";
+
 import './ChannelItem.css'
 
 var requestController = require('../../api/requestController');
@@ -69,11 +73,10 @@ function ChannelItem(props) {
                 style={customStyles}
             >
                 <div className="DeleteChannelModal">
-                    <h4>Delete Channel</h4>
+                    <ModalTopBar title="Delete Channel" onClick={closeModal} />
                     <p>Are you sure you want to delete # {props.channel.channelName}?</p>
-                    <div className="DeleteChannelModalButtons">
-                        <button onClick={closeModal}>Cancel</button>
-                        <button onClick={deleteChannelAndClose}>Confirm</button>
+                    <div className="ModalSubmitContainer">
+                        <Button onClick={deleteChannelAndClose}>Confirm</Button>
                     </div>
                 </div>
             </Modal>
