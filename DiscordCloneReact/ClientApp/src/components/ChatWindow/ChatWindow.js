@@ -40,10 +40,19 @@ function ChatWindow(props) {
         // return true if messages should be grouped,
         // false if messages should not be grouped
         function groupMessagesTogether(message1, message2) {
-            const timeDifference = Math.abs(differenceInMinutes(new Date(message1.creationTime), new Date(message2.creationTime)));
+            try {
+                const timeDifference = Math.abs(differenceInMinutes(new Date(message1.creationTime), new Date(message2.creationTime)));
 
-            //console.log(timeDifference);
-            return (message1.userName === message2.userName) && (timeDifference < 7);
+                //console.log(timeDifference);
+                return (message1.userName === message2.userName) && (timeDifference < 7);
+
+            } catch (e) {
+                console.log("error found in groupMessagesTogether")
+                console.log(`error: ${e}`);
+
+                return (message1.userName === message2.userName);
+            }
+            
         }
 
         sortedMessages.forEach(message => {

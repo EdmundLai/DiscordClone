@@ -12,7 +12,6 @@ var requestController = require("../../api/requestController");
 function Chat(props) {
     const [connection, setConnection] = useState(null);
     const [chat, setChat] = useState([]);
-    const channelConnections = useRef({});
     const [chatNeedsUpdate, setChatNeedsUpdate] = useState(false);
 
     const latestChats = useRef({});
@@ -34,64 +33,6 @@ function Chat(props) {
         //console.log("getChannelMessagesFromDatabase");
 
         latestChats.current[String(props.channel.channelId)] = messageData;
-        setChatNeedsUpdate(true);
-    }, [props.channel]);
-
-    // returns true if channelConnections contains connectionId
-    // uses username as key for connection dictionary
-    const configureChannelConnections = useCallback(async () => {
-        const newChannelConnections = { ...channelConnections.current };
-
-        const username = props.user.userName;
-        //console.log(username);
-
-        //const channelId = String(props.channel.channelId);
-
-        const connectionId = await connection.invoke("GetConnectionId");
-
-        //console.log(`connectionId: ${connectionId}`);
-        if (!(username in newChannelConnections)) {
-            newChannelConnections[username] = new Set();
-        }
-
-        let hasConnectionId = true;
-
-        if (!newChannelConnections[username].has(connectionId)) {
-            newChannelConnections[username].add(connectionId);
-            hasConnectionId = false;
-        }
-
-        //console.log(channelConnections.current);
-
-        channelConnections.current = newChannelConnections;
-
-        return hasConnectionId;
-
-    }, [props.user.userName, connection])
-
-    let handleMessage = useCallback(message => {
-        // props.channel.channelId gets snapshotted when assigned,
-        // or something else, but it is not the updated value
-        //const currChannelId = String(props.channel.channelId);
-
-        const newChats = { ...latestChats.current };
-
-        if (!(String(props.channel.channelId) in newChats)) {
-            newChats[String(props.channel.channelId)] = [];
-        }
-        //console.log(`channelId: ${String(props.channel.channelId)}`);
-        //console.log(`message channelId: ${message.channelId}`);
-        //console.log(message);
-
-
-        newChats[String(message.channelId)].push(message);
-
-        latestChats.current = newChats;
-
-        const updatedChat = newChats[String(message.channelId)];
-
-
-        setChat(updatedChat);
         setChatNeedsUpdate(true);
     }, [props.channel]);
 
@@ -124,16 +65,39 @@ function Chat(props) {
         //console.log("second use effect called");
         let isMounted = true;
 
+        let handleMessage = message => {
+            console.log("handleMessage called!")
+            console.log(message);
+
+            const newChats = { ...latestChats.current };
+
+            if (!(String(props.channel.channelId) in newChats)) {
+                newChats[String(props.channel.channelId)] = [];
+            }
+            console.log(`channelId: ${String(props.channel.channelId)}`);
+            console.log(`message channelId: ${message.channelId}`);
+            console.log(message);
+
+            newChats[String(message.channelId)].push(message);
+
+            latestChats.current = newChats;
+
+            const updatedChat = newChats[String(message.channelId)];
+
+            setChat(updatedChat);
+            setChatNeedsUpdate(true);
+        }
+
         async function initClientConnection(connection) {
             console.log("Connected!");
+            
+            connection.invoke("AddToGroup", String(props.channel.channelId))
+                .catch(err => console.log(err));
+            console.log(`connection added to group ${String(props.channel.channelId)}!`);
 
-            const hasConnectionId = await configureChannelConnections();
-
-            if (!hasConnectionId) {
-                connection.invoke("AddToGroup", String(props.channel.channelId))
-                    .catch(err => console.log(err));
-            }
+            console.log(handleMessage);
             connection.on("ReceiveMessage", handleMessage);
+            console.log("handleMessage handler assigned!");
         }
 
         // if connection is not null
@@ -164,9 +128,13 @@ function Chat(props) {
         return () => {
             console.log("channel is changing!");
 
-            // release message handler when unmounting
+            // release message handler, and remove from current group when unmounting
             if (connection) {
+                console.log("handleMessage released!")
                 connection.off("ReceiveMessage", handleMessage);
+                console.log("removed from group!");
+                connection.invoke("RemoveFromGroup", String(props.channel.channelId))
+                    .catch(err => console.log(err));
             }
             setChat([]);
             //console.log("is chat getting set to empty here?")
@@ -175,9 +143,7 @@ function Chat(props) {
 
 
     }, [connection,
-        configureChannelConnections,
         getChannelMessagesFromDatabase,
-        handleMessage,
         props.channel]);
 
     async function sendMessage(username, message) {
@@ -199,6 +165,7 @@ function Chat(props) {
                 await requestController.sendMessage(userId, channelId, message);
 
                 // send message to signalR group
+                // console.log(`channelId: ${channelId}`);
                 await connection.send("SendMessageToGroup", channelId, chatMessage);
 
                 setChatNeedsUpdate(true);
