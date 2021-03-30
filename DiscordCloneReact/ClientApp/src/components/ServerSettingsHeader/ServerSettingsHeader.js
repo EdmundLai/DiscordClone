@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import ModalTopBar from "../ModalTopBar/ModalTopBar";
 import { SettingOutlined } from "@ant-design/icons";
-
-import { Button } from "antd";
-
-import EditServerNameContainer from "../EditServerNameContainer/EditServerNameContainer";
+import ServerSettingsModalContent from "../ServerSettingsModalContent/ServerSettingsModalContent";
 
 import "./ServerSettingsHeader.css";
-
-var requestController = require("../../api/requestController");
 
 function ServerSettingsHeader(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -64,77 +58,5 @@ function ServerSettingsHeader(props) {
         </div>
     );
 }
-
-function ServerSettingsModalContent(props) {
-    const [actionType, setActionType] = useState("edit");
-
-    var modalContent = <></>;
-
-    if (actionType === "edit") {
-        modalContent = <EditServerNameContainer
-            {...props}
-        />;
-    } else {
-        modalContent = <DeleteServerContainer  {...props} />;
-    }
-
-    function setToEdit() {
-        setActionType("edit");
-    }
-
-    function setToDelete() {
-        setActionType("delete");
-    }
-
-    const editClasses = actionType === "edit" ? "ServerSettingsOption ServerSettingsSelected" : "ServerSettingsOption";
-
-    const deleteClasses = actionType === "delete" ? "ServerSettingsOption ServerSettingsSelected" : "ServerSettingsOption";
-
-    return (
-
-        <div className="ServerSettingsModalContent">
-            <ModalTopBar title="Server Settings" onClick={props.closeModal} />
-            <div className="ServerSettingsModalContainer">
-                <div className="ServerSettingsModalMenu">
-                    <div>
-                        <span className={editClasses} onClick={setToEdit}>Edit Server</span>
-                    </div>
-                    <div >
-                        <span className={deleteClasses} onClick={setToDelete}>Delete Server</span>
-                    </div>
-                </div>
-                <div className="ServerSettingsModalActionArea">
-                    {modalContent}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function DeleteServerContainer(props) {
-    async function deleteServer() {
-        // implement deleting server here
-        await requestController.deleteServer(props.currentServer.serverId)
-
-        props.setServerListNeedsUpdate(true);
-        props.setCurrentServerAndChannel();
-
-        console.log("Server deleted!");
-        props.closeModal();
-    }
-
-    console.log(props);
-
-    return (
-        <div>
-            <h4 className="ServerSettingsHeaderName">Delete Server</h4>
-            <p>Do you really want to delete the server {props.currentServer.serverName}?</p>
-            <div className="ModalSubmitContainer">
-                <Button type="danger" onClick={deleteServer}>Confirm</Button>
-            </div>
-        </div>
-    );
-}
-
 
 export default ServerSettingsHeader;
