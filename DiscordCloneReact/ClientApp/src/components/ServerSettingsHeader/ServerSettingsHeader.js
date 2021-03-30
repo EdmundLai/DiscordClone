@@ -3,9 +3,13 @@ import Modal from "react-modal";
 import ModalTopBar from "../ModalTopBar/ModalTopBar";
 import { SettingOutlined } from "@ant-design/icons";
 
+import { Button } from "antd";
+
 import EditServerNameContainer from "../EditServerNameContainer/EditServerNameContainer";
 
 import "./ServerSettingsHeader.css";
+
+var requestController = require("../../api/requestController");
 
 function ServerSettingsHeader(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -52,7 +56,7 @@ function ServerSettingsHeader(props) {
                 <SettingOutlined onClick={openServerSettingsModal} />
             </div>
             <Modal isOpen={modalIsOpen} style={customStyles}>
-                <ServerSettingsModal
+                <ServerSettingsModalContent
                     {...props}
                     closeModal={closeModal}
                 />
@@ -61,7 +65,7 @@ function ServerSettingsHeader(props) {
     );
 }
 
-function ServerSettingsModal(props) {
+function ServerSettingsModalContent(props) {
     const [actionType, setActionType] = useState("edit");
 
     var modalContent = <></>;
@@ -71,7 +75,7 @@ function ServerSettingsModal(props) {
             {...props}
         />;
     } else {
-        modalContent = <div>Delete Server Content</div>;
+        modalContent = <DeleteServerContainer  {...props} />;
     }
 
     function setToEdit() {
@@ -82,59 +86,55 @@ function ServerSettingsModal(props) {
         setActionType("delete");
     }
 
+    const editClasses = actionType === "edit" ? "ServerSettingsOption ServerSettingsSelected" : "ServerSettingsOption";
+
+    const deleteClasses = actionType === "delete" ? "ServerSettingsOption ServerSettingsSelected" : "ServerSettingsOption";
+
     return (
-        <div className="ServerSettingsModal">
+
+        <div className="ServerSettingsModalContent">
             <ModalTopBar title="Server Settings" onClick={props.closeModal} />
             <div className="ServerSettingsModalContainer">
                 <div className="ServerSettingsModalMenu">
                     <div>
-                        <span className="ServerSettingsOption" onClick={setToEdit}>Edit Server</span>
+                        <span className={editClasses} onClick={setToEdit}>Edit Server</span>
                     </div>
                     <div >
-                        <span className="ServerSettingsOption" onClick={setToDelete}>Delete Server</span>
+                        <span className={deleteClasses} onClick={setToDelete}>Delete Server</span>
                     </div>
                 </div>
-                <div className="ServerSettingsModalContent">
+                <div className="ServerSettingsModalActionArea">
                     {modalContent}
                 </div>
             </div>
         </div>
     );
-
 }
 
-//function EditServerNameContainer(props) {
+function DeleteServerContainer(props) {
+    async function deleteServer() {
+        // implement deleting server here
+        await requestController.deleteServer(props.currentServer.serverId)
 
-//    const formik = useFormik({
-//        initialValues: { serverName: props.currentServer.serverName },
-//        onSubmit: async (values, { resetForm }) => {
-//            //console.log(values.serverName);
-//            await requestController.editServerName(props.currentServer.serverId, values.serverName);
-//            props.setCurrentServerAndChannel(props.currentServer.serverId);
-//            props.setServerListNeedsUpdate(true);
-//            resetForm();
-//            props.closeModal();
-//        },
-//    });
+        props.setServerListNeedsUpdate(true);
+        props.setCurrentServerAndChannel();
 
-//    return (
-//        <div className="EditServerNameContainer">
-//            <form onSubmit={formik.handleSubmit}>
-//                <div>
-//                    <label htmlFor="serverName">Server Name: </label>
-//                    <input
-//                        id="serverName"
-//                        name="serverName"
-//                        type="text"
-//                        onChange={formik.handleChange}
-//                        value={formik.values.serverName}
-//                        required
-//                    />
-//                </div>
-//                <button type="submit">Save Changes</button>
-//            </form>
-//        </div>
-//    );
-//}
+        console.log("Server deleted!");
+        props.closeModal();
+    }
+
+    console.log(props);
+
+    return (
+        <div>
+            <h4 className="ServerSettingsHeaderName">Delete Server</h4>
+            <p>Do you really want to delete the server {props.currentServer.serverName}?</p>
+            <div className="ModalSubmitContainer">
+                <Button type="danger" onClick={deleteServer}>Confirm</Button>
+            </div>
+        </div>
+    );
+}
+
 
 export default ServerSettingsHeader;

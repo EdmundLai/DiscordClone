@@ -74,7 +74,7 @@ function CredentialsForm(props) {
                 />
                 
             </div>
-            <div className="CredentialsFormErrors">{formik.errors.userName}</div>
+            {formik.errors.userName && <div className="CredentialsFormErrors">{formik.errors.userName}</div>}
             <div className="CredentialsFormItem">
 
                 <label className="CredentialsFormLabel">Password: </label>
@@ -87,7 +87,7 @@ function CredentialsForm(props) {
                 />
                 
             </div>
-            <div className="CredentialsFormErrors">{formik.errors.password}</div>
+            {formik.errors.password  && <div className="CredentialsFormErrors">{formik.errors.password}</div>}
 
             <div className="SubmitContainer">
                 <Button htmlType="submit" disabled={!formik.isValid}>{props.submitButtonText}</Button>

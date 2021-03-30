@@ -11,7 +11,7 @@
     cursor: pointer;
 }
 
-.ServerSettingsModal {
+.ServerSettingsModalContent {
     user-select: none;
     height: 100%;
     display: flex;
@@ -20,6 +20,7 @@
 
 .ServerSettingsOption {
     cursor: pointer;
+    color: #81867c;
 }
 
 .ServerSettingsModalHeader {
@@ -37,7 +38,11 @@
     border-right: 2px solid white;
 }
 
-.ServerSettingsModalContent {
+.ServerSettingsModalActionArea {
     flex: 7;
     padding-left: 20px;
+}
+
+.ServerSettingsSelected {
+    color: white;
 }

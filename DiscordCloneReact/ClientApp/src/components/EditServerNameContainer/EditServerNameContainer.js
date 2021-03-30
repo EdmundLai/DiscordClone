@@ -22,6 +22,7 @@ function EditServerNameContainer(props) {
 
     return (
         <div className="EditServerNameContainer">
+            <h4 className="ServerSettingsHeaderName">Edit Server</h4>
             <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label htmlFor="serverName">Server Name: </label>

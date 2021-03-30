@@ -95,6 +95,23 @@ async function deleteChannelFromServer(channelId) {
     }
 }
 
+async function deleteServer(serverId) {
+    try {
+        // delete all channels from server first, then delete the entire server
+        const channels = await getServerChannels(serverId);
+        const channelIds = channels.map(channel => channel.channelId);
+
+        const promiseArr = channelIds.map(channelId => deleteChannelFromServer(channelId));
+
+        await Promise.all(promiseArr);
+
+        await axios.delete(`${apiEndpoint}/api/Servers/delete?serverId=${serverId}`);
+    } catch (e) {
+        console.log("Error from deleteServer");
+        console.log(e);
+    }
+}
+
 // creates a new server in the database
 async function addNewServer(serverName) {
     try {
@@ -174,6 +191,7 @@ exports.getChannelByChannelId = getChannelByChannelId;
 exports.addChannelToServer = addChannelToServer;
 exports.deleteChannelFromServer = deleteChannelFromServer;
 exports.addNewServer = addNewServer;
+exports.deleteServer = deleteServer;
 exports.checkUserNameTaken = checkUserNameTaken;
 exports.addUser = addUser;
 exports.verifyUser = verifyUser;
