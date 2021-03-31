@@ -16,6 +16,7 @@ function ChannelSidebar(props) {
         <ServerSettingsHeader currentServer={props.currentServer}
             setCurrentServerAndChannel={props.setCurrentServerAndChannel}
             setServerListNeedsUpdate={props.setServerListNeedsUpdate}
+            connection={props.connection}
         />
         <ChannelDetails {...props} />
     </> : <></>;

@@ -23,7 +23,7 @@ function Chat(props) {
             .build();
 
         setConnection(newConnection);
-        console.log("setConnection called!");
+        console.log("setConnection from Chat called!");
     }, []);
 
     const getChannelMessagesFromDatabase = useCallback(async () => {

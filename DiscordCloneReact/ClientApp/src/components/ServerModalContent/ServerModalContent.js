@@ -10,6 +10,11 @@ function ServerModalContent(props) {
     async function createNewServer(serverName) {
         const server = await requestController.addNewServer(serverName);
         await requestController.addChannelToServer("general", server.serverId);
+
+        if (props.connection) {
+            await props.connection.invoke("NotifyServerAdded");
+        }
+
         return server.serverId;
     }
 

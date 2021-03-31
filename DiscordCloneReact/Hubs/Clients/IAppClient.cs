@@ -7,7 +7,7 @@ namespace DiscordCloneReact.Hubs.Clients
 {
     public interface IAppClient
     {
-        Task ChannelAdded(int serverId, int channelId);
+        Task ChannelAdded(int serverId);
 
         Task ChannelDeleted(int serverId, int channelId);
 

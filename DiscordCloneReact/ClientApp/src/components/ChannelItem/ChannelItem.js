@@ -58,6 +58,11 @@ function ChannelItem(props) {
     async function deleteChannelAndClose() {
         //console.log(`deleting channel with channel id of ${channel.channelId}`);
         await requestController.deleteChannelFromServer(props.channel.channelId);
+
+        if (props.connection) {
+            await props.connection.invoke("NotifyChannelDeleted", props.currentServer.serverId, props.channel.channelId);
+        }
+
         props.setChannelsNeedUpdate(true);
         props.setCurrentServerAndChannel(props.currentServer.serverId);
 

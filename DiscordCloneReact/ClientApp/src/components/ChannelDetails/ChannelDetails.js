@@ -12,7 +12,6 @@ var requestController = require('../../api/requestController');
 function ChannelDetails(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [channels, setChannels] = useState([]);
-    //const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -84,6 +83,7 @@ function ChannelDetails(props) {
                     currentServer={props.currentServer}
                     setCurrentServerAndChannel={props.setCurrentServerAndChannel}
                     setChannelsNeedUpdate={props.setChannelsNeedUpdate}
+                    connection={props.connection}
                     closeModal={closeModal} />
             </Modal>
         </div>

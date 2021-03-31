@@ -10,9 +10,9 @@ namespace DiscordCloneReact.Hubs
 {
     public class AppHub : Hub<IAppClient>
     {
-        public async Task NotifyChannelAdded(int serverId, int channelId)
+        public async Task NotifyChannelAdded(int serverId)
         {
-            await Clients.Others.ChannelAdded(serverId, channelId);
+            await Clients.Others.ChannelAdded(serverId);
         }
 
         public async Task NotifyChannelDeleted(int serverId, int channelId)

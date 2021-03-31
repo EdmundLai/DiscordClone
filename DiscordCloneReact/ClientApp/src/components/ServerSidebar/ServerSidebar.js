@@ -88,6 +88,7 @@ function ServerSidebar(props) {
                     <ServerModalContent
                         setCurrentServerAndChannel={props.setCurrentServerAndChannel}
                         setServerListNeedsUpdate={props.setServerListNeedsUpdate}
+                        connection={props.connection}
                         closeModal={closeModal}
                     />
                 </Modal>

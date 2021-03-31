@@ -23,6 +23,10 @@ function ChannelModalContent(props) {
             props.currentServer.serverId
         );
 
+        if (props.connection) {
+            await props.connection.invoke("NotifyChannelAdded", props.currentServer.serverId);
+        }
+
         await props.setCurrentServerAndChannel(props.currentServer.serverId, newChannel.channelId);
     }
 

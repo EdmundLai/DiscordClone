@@ -9,6 +9,10 @@ function DeleteServerContainer(props) {
         // implement deleting server here
         await requestController.deleteServer(props.currentServer.serverId)
 
+        if (props.connection) {
+            await props.connection.invoke("NotifyServerDeleted", props.currentServer.serverId);
+        }
+
         props.setServerListNeedsUpdate(true);
         props.setCurrentServerAndChannel();
 
