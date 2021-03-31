@@ -43,7 +43,6 @@ DiscordCloneReact is a Discord Clone implemented using React for the frontend an
 
 ## TODOS
 
-- Fix behavior where if channel or server is added or deleted, changes are not replicated across other users' sessions.
 - Deploy to AWS, Azure or some other Cloud Service provider
 
 ---

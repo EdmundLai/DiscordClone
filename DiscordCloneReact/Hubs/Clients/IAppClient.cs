@@ -14,5 +14,7 @@ namespace DiscordCloneReact.Hubs.Clients
         Task ServerAdded();
 
         Task ServerDeleted(int serverId);
+
+        Task ServerEdited(int serverId);
     }
 }

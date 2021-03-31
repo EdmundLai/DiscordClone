@@ -29,5 +29,10 @@ namespace DiscordCloneReact.Hubs
         {
             await Clients.Others.ServerDeleted(serverId);
         }
+
+        public async Task NotifyServerEdited(int serverId)
+        {
+            await Clients.Others.ServerEdited(serverId);
+        }
     }
 }

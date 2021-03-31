@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import ModalTopBar from "../ModalTopBar/ModalTopBar";
 
-import EditServerNameContainer from "../EditServerNameContainer/EditServerNameContainer";
+import EditServerContainer from "../EditServerContainer/EditServerContainer";
 
 import DeleteServerContainer from "../DeleteServerContainer/DeleteServerContainer";
 
@@ -12,7 +12,7 @@ function ServerSettingsModalContent(props) {
     var modalContent = <></>;
 
     if (actionType === "edit") {
-        modalContent = <EditServerNameContainer
+        modalContent = <EditServerContainer
             {...props}
         />;
     } else {

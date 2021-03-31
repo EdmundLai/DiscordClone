@@ -22,23 +22,6 @@ function AuthenticatedApp(props) {
 
     useEffect(() => {
         let isMounted = true;
-        const setInitialServerAndChannel = async () => {
-            const servers = await requestController.getServers();
-            if (servers.length > 0) {
-                const initialServer = servers[0];
-                console.log(initialServer);
-                if (isMounted) {
-                    setCurrentServer(initialServer);
-                }
-                const serverChannels = await requestController.getServerChannels(initialServer.serverId);
-                if (serverChannels.length > 0) {
-                    const initialChannel = serverChannels[0];
-                    if (isMounted) {
-                        setCurrentChannel(initialChannel);
-                    }
-                }
-            }
-        }
 
         const getUser = async () => {
             const currUser = await requestController.getUser(props.loggedInUserId);
@@ -47,13 +30,7 @@ function AuthenticatedApp(props) {
             }
         }
 
-        const initApp = async() => {
-            await getUser();
-
-            await setInitialServerAndChannel();
-        }
-
-        initApp();
+        getUser();
 
         return () => { isMounted = false; }
     }, [props.loggedInUserId]);
@@ -68,10 +45,6 @@ function AuthenticatedApp(props) {
         setConnection(newConnection);
         console.log("setConnection from AuthenticatedApp called!");
     }, []);
-
-    // will refactor these later
-
-    // ??? why is currentServer and currentChannel null in these callbacks?
 
     // if serverId is not passed in, reset currentServer and currentChannel
     const setCurrentServerAndChannel = useCallback(async (serverId, channelId) => {
@@ -94,55 +67,60 @@ function AuthenticatedApp(props) {
         console.log("handleChannelAdded called.");
         //console.log(currentServer);
         //console.log(currentChannel);
-        //console.log(setChannelsNeedUpdate);
-        ////console.log(`current server: ${currentServer.serverId}`);
-        ////console.log(`deleted server: ${serverId}`);
-        //// check if current server has same serverId
-        //if (currentServer.serverId === serverId) {
-        //    console.log("the serverIds match");
-        //    // if they match, get ChannelSidebar to update channels
-        setChannelsNeedUpdate(true);
-        //} else {
-        //    console.log("the serverIds don't match");
-        //}
+
+        // check if current server has same serverId
+        if (currentServer?.serverId === serverId) {
+            //console.log("the serverIds match");
+            // if they match, get ChannelSidebar to update channels
+            setChannelsNeedUpdate(true);
+        }
         //console.log("end of handleChannelAdded called.")
-        //// else, don't do anything
-    }, []);
+        // else, don't do anything
+    }, [currentServer]);
 
     const handleChannelDeleted = useCallback(async (serverId, channelId) => {
         console.log("handleChannelDeleted called.");
         //console.log(currentServer);
         //console.log(currentChannel);
-        //console.log(setCurrentServerAndChannel);
-        //console.log(`current server: ${currentServer.serverId}`);
-        //console.log(`deleted server: ${serverId}`);
 
         // check if current server has same serverId
-        //if (currentServer.serverId === serverId) {
-        //    // if serverIds match, check if current channel has the same channelId
-        //    if (currentChannel.channelId === channelId) {
-        //        // if channelIds match, call setCurrentServerAndChannel(serverId)
-        //        // to reinitialize current channel
-        await setCurrentServerAndChannel(serverId);
-        //    }
-            // also get ChannelSidebar to update channels regardless if channelIds match
-        setChannelsNeedUpdate(true);
-        //}
+        if (currentServer?.serverId === serverId) {
+            // if serverIds match, check if current channel has the same channelId
+            if (currentChannel?.channelId === channelId) {
+                // if channelIds match, call setCurrentServerAndChannel(serverId)
+                // to reinitialize current channel
+                await setCurrentServerAndChannel(serverId);
+            }
+            //also get ChannelSidebar to update channels regardless if channelIds match
+            setChannelsNeedUpdate(true);
+        }
         // if not, don't do anything
 
         //console.log("end of handleChannelDeleted called.")
-    }, [setCurrentServerAndChannel]);
+    }, [currentServer, currentChannel, setCurrentServerAndChannel]);
 
     const handleServerDeleted = useCallback(async (serverId) => {
-        //// check if current server matches serverId
-        //if (currentServer.serverId === serverId) {
-        //    // if they match, call setCurrentServerAndChannel(),
-        //    // setting both currentChannel and currentServer to null
-        await setCurrentServerAndChannel();
-        //}
-        //// also get serverSidebar to update servers
+        console.log("handleServerDeleted called.");
+        //console.log(currentServer);
+        //console.log(currentChannel);
+
+        // check if current server matches serverId
+        if (currentServer?.serverId === serverId) {
+            console.log("currentServer matches serverId");
+            // if they match, call setCurrentServerAndChannel(),
+            // setting both currentChannel and currentServer to null
+            await setCurrentServerAndChannel();
+        }
+        // also get serverSidebar to update servers
         setServerListNeedsUpdate(true);
-    }, [setCurrentServerAndChannel]);
+    }, [currentServer, setCurrentServerAndChannel]);
+
+    const handleServerEdited = useCallback(async (serverId) => {
+        if (currentServer?.serverId === serverId) {
+            await setCurrentServerAndChannel(serverId);
+        }
+        setServerListNeedsUpdate(true);
+    }, [currentServer, setCurrentServerAndChannel]);
 
 
     useEffect(() => {
@@ -164,6 +142,7 @@ function AuthenticatedApp(props) {
                 connection.on("ChannelDeleted", handleChannelDeleted);
                 connection.on("ServerAdded", handleServerAdded);
                 connection.on("ServerDeleted", handleServerDeleted);
+                connection.on("ServerEdited", handleServerEdited);
             }
         }
 
@@ -177,9 +156,10 @@ function AuthenticatedApp(props) {
                 connection.off("ChannelDeleted", handleChannelDeleted);
                 connection.off("ServerAdded", handleServerAdded);
                 connection.off("ServerDeleted", handleServerDeleted);
+                connection.off("ServerEdited", handleServerEdited);
             }
         };
-    }, [connection, handleChannelAdded, handleChannelDeleted, handleServerDeleted]);
+    }, [connection, handleChannelAdded, handleChannelDeleted, handleServerDeleted, handleServerEdited]);
 
     async function setInitialChannelFromServerId(serverId) {
         const serverChannels = await requestController.getServerChannels(serverId);
@@ -190,26 +170,7 @@ function AuthenticatedApp(props) {
         } else {
             setCurrentChannel(null);
         }
-    }
-
-    // if serverId is not passed in, reset currentServer and currentChannel
-    //async function setCurrentServerAndChannel(serverId, channelId) {
-    //    if (typeof serverId == 'undefined') {
-    //        setCurrentServer(null);
-    //        setCurrentChannel(null);
-    //    } else if (typeof channelId == "undefined") {
-    //        const server = await requestController.getServerByServerId(serverId);
-    //        setCurrentServer(server);
-    //        await setInitialChannelFromServerId(serverId);
-    //    } else {
-    //        const server = await requestController.getServerByServerId(serverId);
-    //        setCurrentServer(server);
-    //        const channel = await requestController.getChannelByChannelId(channelId);
-    //        setCurrentChannel(channel);
-    //    }
-    //}
-
-    
+    }    
 
     const channelContent = currentChannel !== null ?
         <ChannelMessages
