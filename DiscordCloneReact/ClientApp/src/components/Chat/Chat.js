@@ -95,7 +95,7 @@ function Chat(props) {
                 .catch(err => console.log(err));
             console.log(`connection added to group ${String(props.channel.channelId)}!`);
 
-            console.log(handleMessage);
+            //console.log(handleMessage);
             connection.on("ReceiveMessage", handleMessage);
             console.log("handleMessage handler assigned!");
         }

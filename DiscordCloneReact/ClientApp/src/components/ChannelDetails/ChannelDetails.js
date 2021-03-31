@@ -12,7 +12,7 @@ var requestController = require('../../api/requestController');
 function ChannelDetails(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [channels, setChannels] = useState([]);
-    const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
+    //const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -24,17 +24,17 @@ function ChannelDetails(props) {
         }
 
         getChannelsForServer();
-        setChannelsNeedUpdate(false);
+        props.setChannelsNeedUpdate(false);
 
         return () => { isMounted = false; }
-    }, [props.currentServer, channelsNeedUpdate]);
+    }, [props]);
 
     const channelContent = props.currentChannel !== null ? channels.map(channel => {
         return (
             <ChannelItem
                 key={channel.channelId}
                 channel={channel}
-                setChannelsNeedUpdate={setChannelsNeedUpdate}
+                setChannelsNeedUpdate={props.setChannelsNeedUpdate}
                 {...props}
             />
         );
@@ -83,7 +83,7 @@ function ChannelDetails(props) {
                 <ChannelModalContent
                     currentServer={props.currentServer}
                     setCurrentServerAndChannel={props.setCurrentServerAndChannel}
-                    setChannelsNeedUpdate={setChannelsNeedUpdate}
+                    setChannelsNeedUpdate={props.setChannelsNeedUpdate}
                     closeModal={closeModal} />
             </Modal>
         </div>

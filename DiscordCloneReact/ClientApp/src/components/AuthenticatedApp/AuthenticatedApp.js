@@ -13,6 +13,8 @@ function AuthenticatedApp(props) {
     const [currentChannel, setCurrentChannel] = useState(null);
     const [user, setUser] = useState(null);
 
+    const [serverListNeedsUpdate, setServerListNeedsUpdate] = useState(false);
+    const [channelsNeedUpdate, setChannelsNeedUpdate] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -41,9 +43,13 @@ function AuthenticatedApp(props) {
             }
         }
 
-        getUser();
+        const initApp = async() => {
+            await getUser();
 
-        setInitialServerAndChannel();
+            await setInitialServerAndChannel();
+        }
+
+        initApp();
 
         return () => { isMounted = false; }
     }, [props.loggedInUserId]);
@@ -89,6 +95,10 @@ function AuthenticatedApp(props) {
                 currentChannel={currentChannel}
                 setCurrentChannel={setCurrentChannel}
                 setCurrentServerAndChannel={setCurrentServerAndChannel}
+                serverListNeedsUpdate={serverListNeedsUpdate}
+                setServerListNeedsUpdate={setServerListNeedsUpdate}
+                channelsNeedUpdate={channelsNeedUpdate}
+                setChannelsNeedUpdate={setChannelsNeedUpdate}
                 user={user}
                 logout={props.logout}
             />

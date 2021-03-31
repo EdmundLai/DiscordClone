@@ -75,6 +75,8 @@ namespace DiscordCloneReact
             {
                 endpoints.MapHub<ChatHub>("/chathub");
 
+                endpoints.MapHub<AppHub>("/apphub");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
