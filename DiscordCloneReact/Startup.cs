@@ -10,16 +10,23 @@ using DiscordCloneReact.Hubs;
 using DiscordCloneReact.Data;
 using Microsoft.EntityFrameworkCore;
 
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using System;
+
 namespace DiscordCloneReact
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            CurrentEnvironment = environment;
         }
 
         public IConfiguration Configuration { get; }
+
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,11 +43,33 @@ namespace DiscordCloneReact
                 });
             });
 
-            services.AddDbContext<DiscordCloneContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DiscordCloneContext")));
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                // v2 localdb
+                services.AddDbContext<DiscordCloneContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQL")));
+            } else
+            {
+                // v3 azure sql database
+                var keyVaultName = "discordclonereact";
+
+                var kvUri = $"https://{keyVaultName}.vault.azure.net";
+
+                var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+
+                var secretName = "dbconnection";
+
+                var secret = client.GetSecretAsync(secretName).Result;
+
+                string connectionString = secret.Value.Value;
+
+                services.AddDbContext<DiscordCloneContext>(options =>
+                options.UseSqlServer(connectionString));
+            }
 
             services.AddControllersWithViews();
 
-            services.AddSignalR();
+            services.AddSignalR().AddAzureSignalR();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -88,8 +117,8 @@ namespace DiscordCloneReact
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
         }

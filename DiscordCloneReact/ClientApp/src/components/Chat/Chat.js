@@ -18,7 +18,7 @@ function Chat(props) {
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:5001/chathub')
+            .withUrl('/chathub')
             .withAutomaticReconnect()
             .build();
 

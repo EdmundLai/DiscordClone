@@ -38,7 +38,7 @@ function AuthenticatedApp(props) {
     // create new connection to apphub
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:5001/apphub')
+            .withUrl('/apphub')
             .withAutomaticReconnect()
             .build();
 

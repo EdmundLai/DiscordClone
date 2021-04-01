@@ -1,10 +1,8 @@
 var axios = require("axios");
 
-const apiEndpoint = "https://localhost:5001";
-
 async function sendMessage(userId, channelId, messageContent) {
     try {
-        const result = await axios.post(`${apiEndpoint}/api/Messages/create`, {
+        const result = await axios.post(`api/Messages/create`, {
             "ChannelId": channelId,
             "UserId": userId,
             "CreationTime": Date.now(),
@@ -20,7 +18,7 @@ async function sendMessage(userId, channelId, messageContent) {
 
 async function getServers() {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Servers`);
+        const result = await axios.get(`api/Servers`);
         return result.data;
     } catch (e) {
         console.log("Error from getServers");
@@ -30,7 +28,7 @@ async function getServers() {
 
 async function getServerByServerId(serverId) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Servers/server?serverId=${serverId}`);
+        const result = await axios.get(`api/Servers/server?serverId=${serverId}`);
         return result.data;
     } catch (e) {
         console.log("Error from getServerByServerId");
@@ -40,7 +38,7 @@ async function getServerByServerId(serverId) {
 
 async function getServerChannels(serverId) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Channels?serverId=${serverId}`);
+        const result = await axios.get(`api/Channels?serverId=${serverId}`);
         return result.data;
     } catch (e) {
         console.log("Error from getServerChannels");
@@ -50,7 +48,7 @@ async function getServerChannels(serverId) {
 
 async function getChannelByChannelId(channelId) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Channels/channel?channelId=${channelId}`);
+        const result = await axios.get(`api/Channels/channel?channelId=${channelId}`);
         return result.data;
     } catch (e) {
         console.log("Error from getChannelByChannelId");
@@ -60,7 +58,7 @@ async function getChannelByChannelId(channelId) {
 
 async function getChannelMessages(channelId) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Messages?channelId=${channelId}`);
+        const result = await axios.get(`api/Messages?channelId=${channelId}`);
         return result.data;
     } catch (e) {
         console.log("Error from getChannelMessages");
@@ -70,7 +68,7 @@ async function getChannelMessages(channelId) {
 
 async function addChannelToServer(channelName, serverId) {
     try {
-        const result = await axios.post(`${apiEndpoint}/api/Channels/create?channelName=${channelName}&serverId=${serverId}`);
+        const result = await axios.post(`api/Channels/create?channelName=${channelName}&serverId=${serverId}`);
         return result.data;
     } catch (e) {
         console.log("Error from addChannelToServer");
@@ -81,10 +79,10 @@ async function addChannelToServer(channelName, serverId) {
 async function deleteChannelFromServer(channelId) {
     try {
         // remove all messages from database with corresponding channelId
-        const result = await axios.delete(`${apiEndpoint}/api/Messages/deleteByChannelId?channelId=${channelId}`);
+        const result = await axios.delete(`api/Messages/deleteByChannelId?channelId=${channelId}`);
         if (result) {
             // remove channel from database
-            const result2 = await axios.delete(`${apiEndpoint}/api/Channels/delete?channelId=${channelId}`);
+            const result2 = await axios.delete(`api/Channels/delete?channelId=${channelId}`);
             return result2;
         }
 
@@ -105,7 +103,7 @@ async function deleteServer(serverId) {
 
         await Promise.all(promiseArr);
 
-        await axios.delete(`${apiEndpoint}/api/Servers/delete?serverId=${serverId}`);
+        await axios.delete(`api/Servers/delete?serverId=${serverId}`);
     } catch (e) {
         console.log("Error from deleteServer");
         console.log(e);
@@ -115,7 +113,7 @@ async function deleteServer(serverId) {
 // creates a new server in the database
 async function addNewServer(serverName) {
     try {
-        const result = await axios.post(`${apiEndpoint}/api/Servers/create?serverName=${serverName}`);
+        const result = await axios.post(`api/Servers/create?serverName=${serverName}`);
         return result.data;
     } catch (e) {
         console.log("Error from addNewServer");
@@ -125,7 +123,7 @@ async function addNewServer(serverName) {
 
 async function editServerName(serverId, serverName) {
     try {
-        await axios.post(`${apiEndpoint}/api/Servers/editServerName?serverId=${serverId}&newName=${serverName}`);
+        await axios.post(`api/Servers/editServerName?serverId=${serverId}&newName=${serverName}`);
     } catch (e) {
         console.log("Error from editServerName");
         console.log(e);
@@ -134,7 +132,7 @@ async function editServerName(serverId, serverName) {
 
 async function checkUserNameTaken(userName) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Users/userExists?userName=${userName}`);
+        const result = await axios.get(`api/Users/userExists?userName=${userName}`);
         return result.data;
     } catch (e) {
         console.log("Error from checkUsernameNotTaken");
@@ -144,7 +142,7 @@ async function checkUserNameTaken(userName) {
 
 async function addUser(userName, password) {
     try {
-        await axios.post(`${apiEndpoint}/api/Users/addUser?userName=${userName}&password=${password}`);
+        await axios.post(`api/Users/addUser?userName=${userName}&password=${password}`);
     } catch (e) {
         console.log("Error from addUser");
         console.log(e);
@@ -153,7 +151,7 @@ async function addUser(userName, password) {
 
 async function verifyUser(userName, password) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Users/verifyUser?userName=${userName}&password=${password}`);
+        const result = await axios.get(`api/Users/verifyUser?userName=${userName}&password=${password}`);
         return result.data;
     } catch (e) {
         console.log("Error from verifyUser");
@@ -163,7 +161,7 @@ async function verifyUser(userName, password) {
 
 async function getUser(userId) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Users/userByUserId?userId=${userId}`);
+        const result = await axios.get(`api/Users/userByUserId?userId=${userId}`);
         return result.data;
     } catch (e) {
         console.log("Error from getUser");
@@ -173,7 +171,7 @@ async function getUser(userId) {
 
 async function getUserByUserName(userName) {
     try {
-        const result = await axios.get(`${apiEndpoint}/api/Users/userByUserName?userName=${userName}`);
+        const result = await axios.get(`api/Users/userByUserName?userName=${userName}`);
         return result.data;
     } catch (e) {
         console.log("Error from getUserByUserName");

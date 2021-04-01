@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DiscordCloneReact.Migrations
 {
@@ -12,9 +11,9 @@ namespace DiscordCloneReact.Migrations
                 name: "Servers",
                 columns: table => new
                 {
-                    ServerId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ServerName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false)
+                    ServerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServerName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,10 +24,10 @@ namespace DiscordCloneReact.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    UserPassword = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    UserPassword = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,10 +38,10 @@ namespace DiscordCloneReact.Migrations
                 name: "Channels",
                 columns: table => new
                 {
-                    ChannelId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ChannelName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    ServerId = table.Column<int>(type: "integer", nullable: false)
+                    ChannelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChannelName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    ServerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,10 +58,10 @@ namespace DiscordCloneReact.Migrations
                 name: "ServerMembers",
                 columns: table => new
                 {
-                    ServerMemberId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ServerId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    ServerMemberId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServerId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,12 +84,12 @@ namespace DiscordCloneReact.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    MessageId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ChannelId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    MessageContent = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true)
+                    MessageId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChannelId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessageContent = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,32 +114,19 @@ namespace DiscordCloneReact.Migrations
                 values: new object[] { 1, "test" });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "UserId", "UserName", "UserPassword" },
-                values: new object[,]
-                {
-                    { 1, "Tom", null },
-                    { 2, "Jim", null }
-                });
+                table: "Channels",
+                columns: new[] { "ChannelId", "ChannelName", "ServerId" },
+                values: new object[] { 1, "general", 1 });
 
             migrationBuilder.InsertData(
                 table: "Channels",
                 columns: new[] { "ChannelId", "ChannelName", "ServerId" },
-                values: new object[,]
-                {
-                    { 1, "general", 1 },
-                    { 2, "csgo", 1 },
-                    { 3, "genshin", 1 }
-                });
+                values: new object[] { 2, "csgo", 1 });
 
             migrationBuilder.InsertData(
-                table: "ServerMembers",
-                columns: new[] { "ServerMemberId", "ServerId", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 }
-                });
+                table: "Channels",
+                columns: new[] { "ChannelId", "ChannelName", "ServerId" },
+                values: new object[] { 3, "genshin", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Channels_ServerId",
