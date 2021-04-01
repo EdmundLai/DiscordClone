@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace DiscordCloneReact.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class ServerMembersController : ControllerBase
     {
         readonly DiscordCloneContext discordCloneContext;
@@ -21,7 +21,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ServerMember> Get(int? serverId)
+        public IEnumerable<ServerMember> Get([FromQuery] int? serverId)
         {
             if (serverId.HasValue)
             {
@@ -31,7 +31,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpDelete("deleteByServerId")]
-        public async Task DeleteServerMembersByServer(int serverId)
+        public async Task DeleteServerMembersByServer([FromQuery] int serverId)
         {
             try
             {

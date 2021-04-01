@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button } from "antd";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function DeleteServerContainer(props) {
     async function deleteServer() {

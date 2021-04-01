@@ -28,19 +28,19 @@ namespace DiscordCloneReact
 
         private IWebHostEnvironment CurrentEnvironment { get; set; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddCors(options =>
             {
-                options.AddPolicy("ClientPermission", policy =>
-                {
-                    policy.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .WithOrigins("http://localhost:3000")
-                        .AllowCredentials();
-                });
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://discordclonereact.service.signalr.net");
+                                  });
             });
 
             if (CurrentEnvironment.IsDevelopment())
@@ -48,26 +48,19 @@ namespace DiscordCloneReact
                 // v2 localdb
                 services.AddDbContext<DiscordCloneContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQL")));
+
             } else
             {
-                // v3 azure sql database
-                var keyVaultName = "discordclonereact";
-
-                var kvUri = $"https://{keyVaultName}.vault.azure.net";
-
-                var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
-
-                var secretName = "dbconnection";
-
-                var secret = client.GetSecretAsync(secretName).Result;
-
-                string connectionString = secret.Value.Value;
-
+                // v3 azure db
                 services.AddDbContext<DiscordCloneContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQLProd")));
             }
 
-            services.AddControllersWithViews();
+            // v2 localdb
+            services.AddDbContext<DiscordCloneContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQL")));
+
+            services.AddControllers();
 
             services.AddSignalR().AddAzureSignalR();
 
@@ -96,7 +89,7 @@ namespace DiscordCloneReact
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseCors("ClientPermission");
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();
 
@@ -106,10 +99,9 @@ namespace DiscordCloneReact
 
                 endpoints.MapHub<AppHub>("/apphub");
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
+
 
             app.UseSpa(spa =>
             {

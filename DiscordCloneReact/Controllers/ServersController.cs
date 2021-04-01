@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace DiscordCloneReact.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class ServersController : ControllerBase
     {
         readonly DiscordCloneContext discordCloneContext;
@@ -27,13 +27,13 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpGet("server")]
-        public async Task<Server> GetServerByServerId(int serverId)
+        public async Task<Server> GetServerByServerId([FromQuery] int serverId)
         {
             return await discordCloneContext.Servers.FindAsync(serverId);
         }
 
         [HttpPost("create")]
-        public async Task<Server> AddNewServer(string serverName)
+        public async Task<Server> AddNewServer([FromQuery] string serverName)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace DiscordCloneReact.Controllers
 
         // Corresponding messages, server members, and channels must be deleted before server is deleted
         [HttpDelete("delete")]
-        public async Task DeleteServer(int serverId)
+        public async Task DeleteServer([FromQuery] int serverId)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpPost("editServerName")]
-        public async Task EditServerName(int serverId, string newName)
+        public async Task EditServerName([FromQuery] int serverId, [FromQuery] string newName)
         {
             try
             {

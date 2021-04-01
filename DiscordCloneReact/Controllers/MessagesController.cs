@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace DiscordCloneReact.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class MessagesController : ControllerBase
     {
         readonly DiscordCloneContext discordCloneContext;
@@ -27,7 +27,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> Get(int? channelId)
+        public IEnumerable<object> Get([FromQuery] int? channelId)
         {
             var query = from message in discordCloneContext.Set<Message>()
                         join user in discordCloneContext.Set<User>()
@@ -86,7 +86,7 @@ namespace DiscordCloneReact.Controllers
 
         // delete all messages corresponding to channelId
         [HttpDelete("deleteByChannelId")]
-        public async Task<bool> DeleteByChannelId(int channelId)
+        public async Task<bool> DeleteByChannelId([FromQuery] int channelId)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpDelete("deleteByServerId")]
-        public async Task DeleteByServerId(int serverId)
+        public async Task DeleteByServerId([FromQuery] int serverId)
         {
             try
             {

@@ -7,7 +7,7 @@ import ServerModalContent from "../ServerModalContent/ServerModalContent";
 
 import "./ServerSidebar.css";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function ServerSidebar(props) {
     const [servers, setServers] = useState([]);

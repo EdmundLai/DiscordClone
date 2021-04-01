@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 
 import { Input, Button } from "antd";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function EditServerContainer(props) {
 

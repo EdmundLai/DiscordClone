@@ -4,7 +4,7 @@ import { Input, Button } from "antd";
 
 import ModalTopBar from "../ModalTopBar/ModalTopBar";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function ChannelModalContent(props) {
     const formik = useFormik({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-var requestController = require('../api/requestController');
+import requestController from '../api/requestController';
 
 function TestComponent() {
     function sendTestMessage() {

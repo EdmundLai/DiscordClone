@@ -7,7 +7,7 @@ import ChatInput from '../ChatInput/ChatInput';
 
 import "./Chat.css";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function Chat(props) {
     const [connection, setConnection] = useState(null);

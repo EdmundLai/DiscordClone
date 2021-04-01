@@ -8,7 +8,7 @@ import { Button } from 'antd';
 import './UnauthenticatedApp.css';
 
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 function UnauthenticatedApp(props) {
     const login = props.login;

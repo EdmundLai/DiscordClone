@@ -8,7 +8,7 @@ import ChannelMessages from '../ChannelMessages/ChannelMessages';
 
 import './AuthenticatedApp.css';
 
-var requestController = require('../../api/requestController');
+import requestController from '../../api/requestController';
 
 function AuthenticatedApp(props) {
     const [currentServer, setCurrentServer] = useState(null);

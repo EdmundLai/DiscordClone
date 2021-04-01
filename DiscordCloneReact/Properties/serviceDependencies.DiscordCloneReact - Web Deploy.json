@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/discordclonereact/databases/DiscordClone",
+      "type": "mssql.azure",
+      "connectionId": "DiscordCloneContextMSSQL",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

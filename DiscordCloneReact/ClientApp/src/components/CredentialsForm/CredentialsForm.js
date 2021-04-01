@@ -7,7 +7,7 @@ import { Input, Button } from 'antd';
 
 import "./CredentialsForm.css";
 
-var requestController = require("../../api/requestController");
+import requestController from '../../api/requestController';
 
 
 function CredentialsForm(props) {

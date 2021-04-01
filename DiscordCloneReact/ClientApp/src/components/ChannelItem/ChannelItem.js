@@ -11,7 +11,7 @@ import ModalTopBar from "../ModalTopBar/ModalTopBar";
 
 import './ChannelItem.css'
 
-var requestController = require('../../api/requestController');
+import requestController from '../../api/requestController';
 
 function ChannelItem(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace DiscordCloneReact.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class ChannelsController : ControllerBase
     {
         readonly DiscordCloneContext discordCloneContext;
@@ -23,7 +23,7 @@ namespace DiscordCloneReact.Controllers
 
         // gets all channels or all channels belonging to particular server
         [HttpGet]
-        public IEnumerable<Channel> Get(int? serverId)
+        public IEnumerable<Channel> Get([FromQuery]int? serverId)
         {
             if (serverId.HasValue)
             {
@@ -34,13 +34,13 @@ namespace DiscordCloneReact.Controllers
 
         // get channel with the particular channel id
         [HttpGet("channel")]
-        public async Task<Channel> GetChannelByChannelId(int channelId)
+        public async Task<Channel> GetChannelByChannelId([FromQuery]int channelId)
         {
             return await discordCloneContext.Channels.FindAsync(channelId);
         }
 
         [HttpPost("create")]
-        public async Task<Channel> AddNewChannel(string channelName, int serverId)
+        public async Task<Channel> AddNewChannel([FromQuery] string channelName, [FromQuery] int serverId)
         {
             Channel newChannel = new Channel { ChannelName = channelName, ServerId = serverId };
 
@@ -50,7 +50,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<bool> DeleteChannel(int channelId)
+        public async Task<bool> DeleteChannel([FromQuery] int channelId)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace DiscordCloneReact.Controllers
         }
 
         [HttpDelete("deleteByServerId")]
-        public async Task DeleteByServerId(int serverId)
+        public async Task DeleteByServerId([FromQuery] int serverId)
         {
             try
             {

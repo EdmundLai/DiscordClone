@@ -7,7 +7,7 @@ import ChannelItem from '../ChannelItem/ChannelItem';
 
 import './ChannelDetails.css';
 
-var requestController = require('../../api/requestController');
+import requestController from '../../api/requestController';
 
 function ChannelDetails(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
