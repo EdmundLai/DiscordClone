@@ -56,10 +56,6 @@ namespace DiscordCloneReact
                 options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQLProd")));
             }
 
-            // v2 localdb
-            services.AddDbContext<DiscordCloneContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DiscordCloneContextMSSQL")));
-
             services.AddControllers();
 
             services.AddSignalR().AddAzureSignalR();

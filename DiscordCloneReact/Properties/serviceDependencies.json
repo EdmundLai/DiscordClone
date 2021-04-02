@@ -1,8 +1,16 @@
 {
   "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri"
+    },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "DiscordCloneContextMSSQL"
+      "connectionId": "DiscordCloneContextMSSQLProd"
+    },
+    "signalr1": {
+      "type": "signalr",
+      "connectionId": "Azure__SignalR__ConnectionString"
     }
   }
 }
