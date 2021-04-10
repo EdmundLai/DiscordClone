@@ -26,10 +26,10 @@ namespace DiscordCloneReact
                 keyVaultEndpoint,
                 new DefaultAzureCredential());
             })
-                .ConfigureLogging(builder => builder.AddAzureWebAppDiagnostics())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            .ConfigureLogging(builder => builder.AddAzureWebAppDiagnostics())
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }

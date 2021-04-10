@@ -28,6 +28,7 @@ function ChatInput(props) {
     return (
         <form className="ChatInput" onSubmit={onSubmit}>
             <Input
+                autoFocus
                 id="ChatInputBar"
                 type="text"
                 name="message"

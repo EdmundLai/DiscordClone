@@ -66,6 +66,7 @@ function CredentialsForm(props) {
             <div className="CredentialsFormItem">
                 <label className="CredentialsFormLabel">Username: </label>
                 <Input
+                    autoFocus
                     id="userName"
                     name="userName"
                     type="text"
